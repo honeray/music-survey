@@ -778,6 +778,18 @@
         <div class="err" id="err-q8">Please select an option.</div>
       </div>
 
+      <div class="q-card" id="card-q9">
+        <div class="q-label">What is your highest level of education?<span class="req">*</span></div>
+        <div class="pill-row">
+          <label><input type="radio" name="bg_education" value="High school"> High school or below</label>
+          <label><input type="radio" name="bg_education" value="Undergraduate"> Undergraduate</label>
+          <label><input type="radio" name="bg_education" value="Postgraduate (Master's)"> Postgraduate (Master's)</label>
+          <label><input type="radio" name="bg_education" value="Postgraduate (PhD)"> Postgraduate (PhD)</label>
+          <label><input type="radio" name="bg_education" value="Other"> Other</label>
+        </div>
+        <div class="err" id="err-q9">Please select an option.</div>
+      </div>
+
       <div class="btn-row">
         <button type="button" class="btn btn-primary" onclick="goToSongs()">Continue to Music Excerpts →</button>
       </div>
@@ -2896,6 +2908,7 @@
     let attnSlotMap = {};
     let responseData = {};
     let completionCode = '';
+    let surveyStartTime = Date.now();
 
     // Generate 6-digit completion code
     function generateCode() {
@@ -2953,6 +2966,11 @@
       showErr('err-q8', bad8);
       markCard('card-q8', bad8);
       if (bad8) ok = false;
+      const val9 = document.querySelector('input[name="bg_education"]:checked');
+      const bad9 = !val9;
+      showErr('err-q9', bad9);
+      markCard('card-q9', bad9);
+      if (bad9) ok = false;
       if (!ok) { document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
       // Collect phase-1 data
@@ -2963,6 +2981,7 @@
       responseData['bg_discovery_platforms'] = cbChecked.map(e => e.value).join('|');
       responseData['bg_discovery_other'] = document.getElementById('q4-other-txt')?.value || '';
       responseData['bg_heard_ai_before'] = val8?.value || '';
+      responseData['bg_education'] = val9?.value || '';
 
       selectedPairs = shuffle(ALL_SONG_CONTEXT_PAIRS).slice(0, Math.min(SONGS_PER_RESPONDENT, ALL_SONG_CONTEXT_PAIRS.length));
       buildSongCards();
@@ -3169,6 +3188,7 @@
       responseData['refl_fair_compensation'] = document.querySelector('input[name="refl_fair_compensation"]:checked')?.value || '';
       responseData['refl_open_text'] = document.getElementById('pq4-text')?.value || '';
       responseData['meta_timestamp'] = new Date().toISOString();
+      responseData['meta_time_spent_seconds'] = Math.round((Date.now() - surveyStartTime) / 1000);
 
       // Generate completion code
       completionCode = generateCode();
