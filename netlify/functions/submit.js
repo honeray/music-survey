@@ -1,3 +1,23 @@
+const COLUMNS = [
+  'bg_musical_ability', 'bg_listening_frequency', 'bg_artist_influence', 'bg_cultural_influence',
+  'bg_ai_familiarity', 'bg_ai_sentiment',
+  'bg_discovery_youtube', 'bg_discovery_spotify', 'bg_discovery_applemusic', 'bg_discovery_netease',
+  'bg_discovery_tiktok', 'bg_discovery_bilibili', 'bg_discovery_bandcamp', 'bg_discovery_other_cb',
+  'bg_discovery_platforms', 'bg_discovery_other', 'bg_heard_ai_before', 'bg_education',
+  'song_01_id', 'song_01_context_type', 'song_01_rating', 'song_01_heard_before', 'song_01_attn_check',
+  'song_02_id', 'song_02_context_type', 'song_02_rating', 'song_02_heard_before', 'song_02_attn_check',
+  'song_03_id', 'song_03_context_type', 'song_03_rating', 'song_03_heard_before', 'song_03_attn_check',
+  'song_04_id', 'song_04_context_type', 'song_04_rating', 'song_04_heard_before', 'song_04_attn_check',
+  'song_05_id', 'song_05_context_type', 'song_05_rating', 'song_05_heard_before', 'song_05_attn_check',
+  'song_06_id', 'song_06_context_type', 'song_06_rating', 'song_06_heard_before', 'song_06_attn_check',
+  'song_07_id', 'song_07_context_type', 'song_07_rating', 'song_07_heard_before', 'song_07_attn_check',
+  'song_08_id', 'song_08_context_type', 'song_08_rating', 'song_08_heard_before', 'song_08_attn_check',
+  'song_09_id', 'song_09_context_type', 'song_09_rating', 'song_09_heard_before', 'song_09_attn_check',
+  'meta_selected_pair_ids',
+  'refl_sound_vs_context', 'refl_ai_affect', 'refl_fair_compensation', 'refl_open_text',
+  'meta_timestamp', 'meta_time_spent_seconds', 'completion_code',
+];
+
 exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -26,6 +46,9 @@ exports.handler = async (event) => {
     'Content-Type': 'application/json'
   };
 
+  const csvHeader = COLUMNS.map(k => '"' + k.replace(/"/g, '""') + '"').join(',');
+  const csvRow = COLUMNS.map(k => '"' + String(data[k] ?? '').replace(/"/g, '""') + '"').join(',');
+
   for (let attempt = 0; attempt < 4; attempt++) {
     let sha = null, existingLines = [];
     try {
@@ -46,14 +69,13 @@ exports.handler = async (event) => {
       return { statusCode: 502, body: 'GitHub read error: ' + e.message };
     }
 
-    const keys = Object.keys(data);
-    const csvRow = keys.map(k => '"' + String(data[k] ?? '').replace(/"/g, '""') + '"').join(',');
     let newContent;
     if (existingLines.length === 0) {
-      const header = keys.map(k => '"' + k.replace(/"/g, '""') + '"').join(',');
-      newContent = header + '\n' + csvRow + '\n';
+      newContent = csvHeader + '\n' + csvRow + '\n';
     } else {
-      newContent = existingLines.join('\n') + '\n' + csvRow + '\n';
+      // Replace the first line with the fixed header; keep all existing data rows
+      const dataLines = existingLines.slice(1);
+      newContent = csvHeader + '\n' + dataLines.join('\n') + '\n' + csvRow + '\n';
     }
 
     const encoded = Buffer.from(newContent, 'utf-8').toString('base64');
