@@ -790,6 +790,17 @@
         <div class="err" id="err-q9">Please select an option.</div>
       </div>
 
+      <div class="q-card" id="card-q10">
+        <div class="q-label">Does your profession, career, or field of study primarily focus on STEM or the arts?<span class="req">*</span></div>
+        <div class="pill-row">
+          <label><input type="radio" name="bg_field_focus" value="STEM"> STEM (science, technology, engineering, or mathematics)</label>
+          <label><input type="radio" name="bg_field_focus" value="Arts"> Arts / humanities</label>
+          <label><input type="radio" name="bg_field_focus" value="Both"> Both</label>
+          <label><input type="radio" name="bg_field_focus" value="Neither"> Neither / other</label>
+        </div>
+        <div class="err" id="err-q10">Please select an option.</div>
+      </div>
+
       <div class="btn-row">
         <button type="button" class="btn btn-primary" onclick="goToSongs()">Continue to Music Excerpts →</button>
       </div>
@@ -2971,6 +2982,11 @@
       showErr('err-q9', bad9);
       markCard('card-q9', bad9);
       if (bad9) ok = false;
+      const val10 = document.querySelector('input[name="bg_field_focus"]:checked');
+      const bad10 = !val10;
+      showErr('err-q10', bad10);
+      markCard('card-q10', bad10);
+      if (bad10) ok = false;
       if (!ok) { document.querySelector('.has-error')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
       // Collect phase-1 data
@@ -2982,6 +2998,7 @@
       responseData['bg_discovery_other'] = document.getElementById('q4-other-txt')?.value || '';
       responseData['bg_heard_ai_before'] = val8?.value || '';
       responseData['bg_education'] = val9?.value || '';
+      responseData['bg_field_focus'] = val10?.value || '';
 
       selectedPairs = shuffle(ALL_SONG_CONTEXT_PAIRS).slice(0, Math.min(SONGS_PER_RESPONDENT, ALL_SONG_CONTEXT_PAIRS.length));
       buildSongCards();
