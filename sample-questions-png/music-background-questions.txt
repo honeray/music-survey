@@ -1,0 +1,260 @@
+SECTION: Rhythm
+
+QUESTION
+Level: 1
+Question: What is the time signature for this bar?
+Image: Level1-Question1.png
+Choices: 2/4, 4/4, 3/4
+Answer: 4/4
+
+QUESTION
+Level: 2
+Question: Which of these three bars are grouped correctly?
+Image: Level2-Question1.png
+Choices: 1st bar, 2nd bar, 3rd bar
+Answer: 3rd bar
+
+QUESTION
+Level: 3
+Question: What is the time signature for this bar?
+Image: Level3-Question1.png
+Choices: 3/8, 6/8, 2/4
+Answer: 3/8
+
+QUESTION
+Level: 4
+Question: In 9/16, how many dotted eighth-note (dotted-quaver) beats are in a bar?
+Image: none
+Choices: 3, 6, 9, 12
+Answer: 3
+
+QUESTION
+Level: 5
+Question: Which of the below bars is grouped correctly?
+Image: Level5-Question1.png
+Choices: 1st bar, 2nd bar, 3rd bar
+Answer: 1st bar
+
+SECTION: Pitch
+
+QUESTION
+Level: 1
+Question: What is the name of this note?
+Image: Level1-Question2.png
+Choices: F#, D#, G, E
+Answer: F#
+
+QUESTION
+Level: 2
+Question: What is the name of this note?
+Image: Level2-Question2.png
+Choices: A, B, C#, G
+Answer: B
+
+QUESTION
+Level: 3
+Question: (True/False) Bars A and B are at the same pitch.
+Image: Level3-Question2.png
+Choices: True, False
+Answer: True
+
+QUESTION
+Level: 4
+Question: What is the name of this note?
+Image: Level4-Question2.png
+Choices: D sharp, D double sharp, B double sharp, C sharp
+Answer: B double sharp
+
+QUESTION
+Level: 5
+Question: Which of the three bars shows the correct enharmonic equivalent of E?
+Image: Level5-Question2.png
+Choices: 1st bar, 2nd bar, 3rd bar
+Answer: 2nd bar
+
+SECTION: Keys and Scales
+
+QUESTION
+Level: 1
+Question: (True/False) This is the 2nd scale degree of G Major
+Image: Level1-Question3.png
+Choices: True, False
+Answer: True
+
+QUESTION
+Level: 2
+Question: Which of these is the correctly written key signature for A major?
+Image: Level2-Question3.png
+Choices: 1st key signature, 2nd key signature, 3rd key signature, 4th key signature
+Answer: 3rd key signature
+
+QUESTION
+Level: 3
+Question: What key is this melody in?
+Image: Level3-Question3.png
+Choices: E-flat major, A-flat major, C minor, D minor
+Answer: A-flat major
+
+QUESTION
+Level: 4
+Question: (True/False) This is the correctly written scale for G# melodic minor, ascending.
+Image: Level4-Question3.png
+Choices: True, False
+Answer: False
+
+QUESTION
+Level: 5
+Question: Which of the below options is the correctly written key signature of B major?
+Image: Level5-Question3.png
+Choices: Option 1, Option 2, Option 3, Option 4
+Answer: Option 4
+
+SECTION: Intervals
+
+QUESTION
+Level: 1
+Question: What is the name of the note a perfect 4th above the note shown?
+Image: Level1-Question4.png
+Choices: A, G, F, G#
+Answer: G
+
+QUESTION
+Level: 2
+Question: What number interval is this?
+Image: Level2-Question4.png
+Choices: 5th, 6th, 7th, 8th/8ve
+Answer: 7th
+
+QUESTION
+Level: 3
+Question: What type of interval is this?
+Image: Level3-Question4.png
+Choices: perfect, major, minor
+Answer: perfect
+
+QUESTION
+Level: 4
+Question: What type of interval is this?
+Image: Level4-Question4.png
+Choices: perfect, major, minor, diminished, augmented
+Answer: augmented
+
+QUESTION
+Level: 5
+Question: What is the name of this interval?
+Image: Level5-Question4.png
+Choices: major 10th, compound perfect 4th, augmented 11th, compound diminished 4th
+Answer: compound perfect 4th
+
+
+SECTION: Chords
+
+QUESTION
+Level: 1
+Question: What is the name of the note that would complete the incomplete D major triad shown?
+Image: Level1-Question5.png
+Choices: D, A, F#, C
+Answer: D
+
+QUESTION
+Level: 2
+Question: What key is this tonic triad from?
+Image: Level2-Question5.png
+Choices: B-flat major, C major, E-flat major, E minor
+Answer: E-flat major
+
+QUESTION
+Level: 3
+Question: What key is this tonic triad from?
+Image: Level3-Question5.png
+Choices: E-flat major, A-flat major, C minor, B-flat major
+Answer: A-flat major
+
+QUESTION
+Level: 4
+Question: (True/False) This is the subdominant triad in F# minor
+Image: Level4-Question5.png
+Choices: True, False
+Answer: False
+
+QUESTION
+Level: 5
+Question: Which of the below chords would be most suitable for the melody shown?
+Image: Level5-Question5.png
+Choices: I, II, IV, V
+Answer: II
+
+
+SECTION: Terms and Signs
+
+QUESTION
+Level: 1
+Question: What does "adagio" mean?
+Image: none
+Choices: slow, quick, at a medium speed, fairly quick
+Answer: slow
+
+QUESTION
+Level: 2
+Question: What does "allegretto" mean?
+Image: none
+Choices: slow, fairly quick, gradually getting quicker, slow and stately
+Answer: fairly quick
+
+QUESTION
+Level: 3
+Question: What does "prestissimo" mean?
+Image: none
+Choices: heavy, fast, very fast, very loud
+Answer: very fast
+
+QUESTION
+Level: 4
+Question: What does "tempo rubato" mean?
+Image: none
+Choices: with some freedom of time, in time, as before, at a comfortable speed
+Answer: with some freedom of time
+
+QUESTION
+Level: 5
+Question: What is the most appropriate name for this written-out ornament marked with a bracket?
+Image: Level5-Question6.png
+Choices: appoggiatura, upper turn, trill, upper mordent
+Answer: trill
+
+SECTION: Music in Context
+
+QUESTION
+Level: 1
+Question: (True/False) The melody shown gets gradually louder towards the end.
+Image: Level1-Question7.png
+Choices: True, False
+Answer: False
+
+QUESTION
+Level: 2
+Question: How many times does the 7th degree of the scale occur in the melody shown?
+Image: Level2-Question7.png
+Choices: 3, 4, 5, 6
+Answer: 5
+
+QUESTION
+Level: 3
+Question: Which bar in the melody shown has a dotted eighth-note (dotted quaver)?
+Image: Level3-Question7.png
+Choices: Bar 3, Bar 4, Bar 5, Bar 7
+Answer: Bar 5
+
+QUESTION
+Level: 4
+Question: In the melody shown, how many times does the leading note in the key of C# minor occur?
+Image: Level4-Question7.png
+Choices: 3, 4, 5, 6
+Answer: 4
+
+QUESTION
+Level: 5
+Question: (True/False) The music shown ends on the subdominant chord of F# minor.
+Image: Level5-Question7.png
+Choices: True, False
+Answer: False

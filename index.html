@@ -585,6 +585,29 @@
     .download-btn:hover {
       background: #2d6337;
     }
+
+    .mq-section-header {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      color: var(--ink);
+      padding: 14px 0 10px;
+      margin: 20px 0 4px;
+      border-bottom: 1px solid var(--rule);
+      letter-spacing: 0.01em;
+    }
+
+    .mq-section-header:first-child {
+      margin-top: 0;
+    }
+
+    .mq-img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      border: 1px solid var(--rule);
+      margin: 10px 0 4px;
+      display: block;
+      background: #fff;
+    }
   </style>
 </head>
 
@@ -598,7 +621,7 @@
         <p>Academic research · Estimated time: 15–25 min · All responses are anonymous.</p>
       </div>
       <div class="progress-wrap">
-        <div class="progress-meta"><span>Section 1 of 3 — Background</span><span>Step 1</span></div>
+        <div class="progress-meta"><span>Section 1 of 4 — Background</span><span>Step 1</span></div>
         <div class="progress-track">
           <div class="progress-fill" style="width:5%"></div>
         </div>
@@ -802,14 +825,33 @@
       </div>
 
       <div class="btn-row">
-        <button type="button" class="btn btn-primary" onclick="goToSongs()">Continue to Music Excerpts →</button>
+        <button type="button" class="btn btn-primary" onclick="goToMusicQuiz()">Continue to Music Knowledge →</button>
       </div>
     </div><!-- /phase-1 -->
+
+    <!-- PHASE 1b — Music Knowledge Quiz -->
+    <div class="phase" id="phase-1b">
+      <div class="progress-wrap">
+        <div class="progress-meta"><span>Section 2 of 4 — Music Knowledge</span><span>Step 2</span></div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width:30%"></div>
+        </div>
+      </div>
+      <div class="section-label">Music Knowledge</div>
+      <div class="instructions-box">
+        This section tests your music theory knowledge. There are <strong>35 questions</strong> across seven topics, each with increasing difficulty. Please answer every question to the best of your ability — there are right and wrong answers here.
+      </div>
+      <div id="music-quiz-container"></div>
+      <div class="btn-row">
+        <button type="button" class="btn btn-secondary" onclick="goToPhase(1)">← Back</button>
+        <button type="button" class="btn btn-primary" onclick="goToSongsFromQuiz()">Continue to Music Excerpts →</button>
+      </div>
+    </div><!-- /phase-1b -->
 
     <!-- PHASE 2 — Song Rating -->
     <div class="phase" id="phase-2">
       <div class="progress-wrap">
-        <div class="progress-meta"><span>Section 2 of 3 — Music Excerpts</span><span id="prog-label-2">Step 2</span>
+        <div class="progress-meta"><span>Section 3 of 4 — Music Excerpts</span><span id="prog-label-2">Step 3</span>
         </div>
         <div class="progress-track">
           <div class="progress-fill" id="prog-fill-2" style="width:40%"></div>
@@ -824,7 +866,7 @@
       </div>
       <div id="songs-container"></div>
       <div class="btn-row">
-        <button type="button" class="btn btn-secondary" onclick="goToPhase(1)">← Back</button>
+        <button type="button" class="btn btn-secondary" onclick="goToPhase('1b')">← Back</button>
         <button type="button" class="btn btn-primary" onclick="goToReflection()">Continue to Final Questions →</button>
       </div>
     </div><!-- /phase-2 -->
@@ -832,7 +874,7 @@
     <!-- PHASE 3 — Reflection -->
     <div class="phase" id="phase-3">
       <div class="progress-wrap">
-        <div class="progress-meta"><span>Section 3 of 3 — Reflection</span><span>Step 3</span></div>
+        <div class="progress-meta"><span>Section 4 of 4 — Reflection</span><span>Step 4</span></div>
         <div class="progress-track">
           <div class="progress-fill" style="width:90%"></div>
         </div>
@@ -2952,8 +2994,195 @@
     }
     function slotKey(n) { return String(n).padStart(2, '0'); }
 
-    // PHASE 1 → PHASE 2
-    function goToSongs() {
+    // ── MUSIC KNOWLEDGE QUIZ DATA ────────────────────────────────────
+    const MUSIC_QUESTIONS = [
+      // Section 1: Rhythm
+      { id: 'mq_rhythm_1', section: 'Rhythm', level: 1,
+        question: 'What is the time signature for this bar?',
+        image: 'sample-questions-png/Level1-Question1.png',
+        choices: ['2/4', '4/4', '3/4'], answer: '4/4' },
+      { id: 'mq_rhythm_2', section: 'Rhythm', level: 2,
+        question: 'Which of these three bars are grouped correctly?',
+        image: 'sample-questions-png/Level2-Question1.png',
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '3rd bar' },
+      { id: 'mq_rhythm_3', section: 'Rhythm', level: 3,
+        question: 'What is the time signature for this bar?',
+        image: 'sample-questions-png/Level3-Question1.png',
+        choices: ['3/8', '6/8', '2/4'], answer: '3/8' },
+      { id: 'mq_rhythm_4', section: 'Rhythm', level: 4,
+        question: 'In 9/16, how many dotted eighth-note (dotted-quaver) beats are in a bar?',
+        image: null,
+        choices: ['3', '6', '9', '12'], answer: '3' },
+      { id: 'mq_rhythm_5', section: 'Rhythm', level: 5,
+        question: 'Which of the below bars is grouped correctly?',
+        image: 'sample-questions-png/Level5-Question1.png',
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '1st bar' },
+
+      // Section 2: Pitch
+      { id: 'mq_pitch_1', section: 'Pitch', level: 1,
+        question: 'What is the name of this note?',
+        image: 'sample-questions-png/Level1-Question2.png',
+        choices: ['F#', 'D#', 'G', 'E'], answer: 'F#' },
+      { id: 'mq_pitch_2', section: 'Pitch', level: 2,
+        question: 'What is the name of this note?',
+        image: 'sample-questions-png/Level2-Question2.png',
+        choices: ['A', 'B', 'C#', 'G'], answer: 'B' },
+      { id: 'mq_pitch_3', section: 'Pitch', level: 3,
+        question: '(True/False) Bars A and B are at the same pitch.',
+        image: 'sample-questions-png/Level3-Question2.png',
+        choices: ['True', 'False'], answer: 'True' },
+      { id: 'mq_pitch_4', section: 'Pitch', level: 4,
+        question: 'What is the name of this note?',
+        image: 'sample-questions-png/Level4-Question2.png',
+        choices: ['D sharp', 'D double sharp', 'B double sharp', 'C sharp'], answer: 'B double sharp' },
+      { id: 'mq_pitch_5', section: 'Pitch', level: 5,
+        question: 'Which of the three bars shows the correct enharmonic equivalent of E?',
+        image: 'sample-questions-png/Level5-Question2.png',
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '2nd bar' },
+
+      // Section 3: Keys and Scales
+      { id: 'mq_keys_1', section: 'Keys and Scales', level: 1,
+        question: '(True/False) This is the 2nd scale degree of G Major.',
+        image: 'sample-questions-png/Level1-Question3.png',
+        choices: ['True', 'False'], answer: 'True' },
+      { id: 'mq_keys_2', section: 'Keys and Scales', level: 2,
+        question: 'Which of these is the correctly written key signature for A major?',
+        image: 'sample-questions-png/Level2-Question3.png',
+        choices: ['1st key signature', '2nd key signature', '3rd key signature', '4th key signature'], answer: '3rd key signature' },
+      { id: 'mq_keys_3', section: 'Keys and Scales', level: 3,
+        question: 'What key is this melody in?',
+        image: 'sample-questions-png/Level3-Question3.png',
+        choices: ['E-flat major', 'A-flat major', 'C minor', 'D minor'], answer: 'A-flat major' },
+      { id: 'mq_keys_4', section: 'Keys and Scales', level: 4,
+        question: '(True/False) This is the correctly written scale for G# melodic minor, ascending.',
+        image: 'sample-questions-png/Level4-Question3.png',
+        choices: ['True', 'False'], answer: 'False' },
+      { id: 'mq_keys_5', section: 'Keys and Scales', level: 5,
+        question: 'Which of the below options is the correctly written key signature of B major?',
+        image: 'sample-questions-png/Level5-Question3.png',
+        choices: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], answer: 'Option 4' },
+
+      // Section 4: Intervals
+      { id: 'mq_intervals_1', section: 'Intervals', level: 1,
+        question: 'What is the name of the note a perfect 4th above the note shown?',
+        image: 'sample-questions-png/Level1-Question4.png',
+        choices: ['A', 'G', 'F', 'G#'], answer: 'G' },
+      { id: 'mq_intervals_2', section: 'Intervals', level: 2,
+        question: 'What number interval is this?',
+        image: 'sample-questions-png/Level2-Question4.png',
+        choices: ['5th', '6th', '7th', '8th/8ve'], answer: '7th' },
+      { id: 'mq_intervals_3', section: 'Intervals', level: 3,
+        question: 'What type of interval is this?',
+        image: 'sample-questions-png/Level3-Question4.png',
+        choices: ['perfect', 'major', 'minor'], answer: 'perfect' },
+      { id: 'mq_intervals_4', section: 'Intervals', level: 4,
+        question: 'What type of interval is this?',
+        image: 'sample-questions-png/Level4-Question4.png',
+        choices: ['perfect', 'major', 'minor', 'diminished', 'augmented'], answer: 'augmented' },
+      { id: 'mq_intervals_5', section: 'Intervals', level: 5,
+        question: 'What is the name of this interval?',
+        image: 'sample-questions-png/Level5-Question4.png',
+        choices: ['major 10th', 'compound perfect 4th', 'augmented 11th', 'compound diminished 4th'], answer: 'compound perfect 4th' },
+
+      // Section 5: Chords
+      { id: 'mq_chords_1', section: 'Chords', level: 1,
+        question: 'What is the name of the note that would complete the incomplete D major triad shown?',
+        image: 'sample-questions-png/Level1-Question5.png',
+        choices: ['D', 'A', 'F#', 'C'], answer: 'D' },
+      { id: 'mq_chords_2', section: 'Chords', level: 2,
+        question: 'What key is this tonic triad from?',
+        image: 'sample-questions-png/Level2-Question5.png',
+        choices: ['B-flat major', 'C major', 'E-flat major', 'E minor'], answer: 'E-flat major' },
+      { id: 'mq_chords_3', section: 'Chords', level: 3,
+        question: 'What key is this tonic triad from?',
+        image: 'sample-questions-png/Level3-Question5.png',
+        choices: ['E-flat major', 'A-flat major', 'C minor', 'B-flat major'], answer: 'A-flat major' },
+      { id: 'mq_chords_4', section: 'Chords', level: 4,
+        question: '(True/False) This is the subdominant triad in F# minor.',
+        image: 'sample-questions-png/Level4-Question5.png',
+        choices: ['True', 'False'], answer: 'False' },
+      { id: 'mq_chords_5', section: 'Chords', level: 5,
+        question: 'Which of the below chords would be most suitable for the melody shown?',
+        image: 'sample-questions-png/Level5-Question5.png',
+        choices: ['I', 'II', 'IV', 'V'], answer: 'II' },
+
+      // Section 6: Terms and Signs
+      { id: 'mq_terms_1', section: 'Terms and Signs', level: 1,
+        question: 'What does "adagio" mean?',
+        image: null,
+        choices: ['slow', 'quick', 'at a medium speed', 'fairly quick'], answer: 'slow' },
+      { id: 'mq_terms_2', section: 'Terms and Signs', level: 2,
+        question: 'What does "allegretto" mean?',
+        image: null,
+        choices: ['slow', 'fairly quick', 'gradually getting quicker', 'slow and stately'], answer: 'fairly quick' },
+      { id: 'mq_terms_3', section: 'Terms and Signs', level: 3,
+        question: 'What does "prestissimo" mean?',
+        image: null,
+        choices: ['heavy', 'fast', 'very fast', 'very loud'], answer: 'very fast' },
+      { id: 'mq_terms_4', section: 'Terms and Signs', level: 4,
+        question: 'What does "tempo rubato" mean?',
+        image: null,
+        choices: ['with some freedom of time', 'in time', 'as before', 'at a comfortable speed'], answer: 'with some freedom of time' },
+      { id: 'mq_terms_5', section: 'Terms and Signs', level: 5,
+        question: 'What is the most appropriate name for this written-out ornament marked with a bracket?',
+        image: 'sample-questions-png/Level5-Question6.png',
+        choices: ['appoggiatura', 'upper turn', 'trill', 'upper mordent'], answer: 'trill' },
+
+      // Section 7: Music in Context
+      { id: 'mq_context_1', section: 'Music in Context', level: 1,
+        question: '(True/False) The melody shown gets gradually louder towards the end.',
+        image: 'sample-questions-png/Level1-Question7.png',
+        choices: ['True', 'False'], answer: 'False' },
+      { id: 'mq_context_2', section: 'Music in Context', level: 2,
+        question: 'How many times does the 7th degree of the scale occur in the melody shown?',
+        image: 'sample-questions-png/Level2-Question7.png',
+        choices: ['3', '4', '5', '6'], answer: '5' },
+      { id: 'mq_context_3', section: 'Music in Context', level: 3,
+        question: 'Which bar in the melody shown has a dotted eighth-note (dotted quaver)?',
+        image: 'sample-questions-png/Level3-Question7.png',
+        choices: ['Bar 3', 'Bar 4', 'Bar 5', 'Bar 7'], answer: 'Bar 5' },
+      { id: 'mq_context_4', section: 'Music in Context', level: 4,
+        question: 'In the melody shown, how many times does the leading note in the key of C# minor occur?',
+        image: 'sample-questions-png/Level4-Question7.png',
+        choices: ['3', '4', '5', '6'], answer: '4' },
+      { id: 'mq_context_5', section: 'Music in Context', level: 5,
+        question: '(True/False) The music shown ends on the subdominant chord of F# minor.',
+        image: 'sample-questions-png/Level5-Question7.png',
+        choices: ['True', 'False'], answer: 'False' },
+    ];
+
+    function buildMusicQuiz() {
+      const container = document.getElementById('music-quiz-container');
+      container.innerHTML = '';
+      let currentSection = '';
+      MUSIC_QUESTIONS.forEach((q, idx) => {
+        if (q.section !== currentSection) {
+          currentSection = q.section;
+          const header = document.createElement('div');
+          header.className = 'mq-section-header';
+          header.textContent = currentSection;
+          container.appendChild(header);
+        }
+        const card = document.createElement('div');
+        card.className = 'q-card';
+        card.id = 'card-' + q.id;
+        const imgHtml = q.image
+          ? '<img src="' + q.image + '" alt="Music notation example" class="mq-img">'
+          : '';
+        const choicesHtml = q.choices.map(c =>
+          '<label><input type="radio" name="' + q.id + '" value="' + c.replace(/"/g, '&quot;') + '"> ' + c + '</label>'
+        ).join('');
+        card.innerHTML =
+          '<div class="q-label">Q' + (idx + 1) + '. ' + q.question + '<span class="req">*</span></div>' +
+          imgHtml +
+          '<div class="pill-row" style="margin-top:10px;">' + choicesHtml + '</div>' +
+          '<div class="err" id="err-' + q.id + '">Please select an answer.</div>';
+        container.appendChild(card);
+      });
+    }
+
+    // PHASE 1 → PHASE 1b
+    function goToMusicQuiz() {
       let ok = true;
       const likertNames = [
         ['bg_musical_ability', 'q1'], ['bg_listening_frequency', 'q2'],
@@ -2999,6 +3228,31 @@
       responseData['bg_heard_ai_before'] = val8?.value || '';
       responseData['bg_education'] = val9?.value || '';
       responseData['bg_field_focus'] = val10?.value || '';
+
+      if (!document.getElementById('music-quiz-container').children.length) {
+        buildMusicQuiz();
+      }
+      goToPhase('1b');
+    }
+
+    // PHASE 1b → PHASE 2
+    function goToSongsFromQuiz() {
+      let ok = true;
+      let firstBad = null;
+      MUSIC_QUESTIONS.forEach(q => {
+        const val = document.querySelector('input[name="' + q.id + '"]:checked');
+        const bad = !val;
+        showErr('err-' + q.id, bad);
+        markCard('card-' + q.id, bad);
+        if (bad) { ok = false; firstBad = firstBad || document.getElementById('card-' + q.id); }
+      });
+      if (!ok) { firstBad?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
+
+      // Collect quiz answers and store correctness (1 = correct, 0 = incorrect)
+      MUSIC_QUESTIONS.forEach(q => {
+        const selected = document.querySelector('input[name="' + q.id + '"]:checked')?.value || '';
+        responseData[q.id] = selected === q.answer ? '1' : '0';
+      });
 
       selectedPairs = shuffle(ALL_SONG_CONTEXT_PAIRS).slice(0, Math.min(SONGS_PER_RESPONDENT, ALL_SONG_CONTEXT_PAIRS.length));
       buildSongCards();
