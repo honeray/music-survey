@@ -806,7 +806,8 @@
         <div class="pill-row">
           <label><input type="radio" name="bg_education" value="High school"> High school or below</label>
           <label><input type="radio" name="bg_education" value="Undergraduate"> Undergraduate</label>
-          <label><input type="radio" name="bg_education" value="Postgraduate (Master's)"> Postgraduate (Master's)</label>
+          <label><input type="radio" name="bg_education" value="Postgraduate (Master's)"> Postgraduate
+            (Master's)</label>
           <label><input type="radio" name="bg_education" value="Postgraduate (PhD)"> Postgraduate (PhD)</label>
           <label><input type="radio" name="bg_education" value="Other"> Other</label>
         </div>
@@ -814,9 +815,11 @@
       </div>
 
       <div class="q-card" id="card-q10">
-        <div class="q-label">Does your profession, career, or field of study primarily focus on STEM or the arts?<span class="req">*</span></div>
+        <div class="q-label">Does your profession, career, or field of study primarily focus on STEM or the arts?<span
+            class="req">*</span></div>
         <div class="pill-row">
-          <label><input type="radio" name="bg_field_focus" value="STEM"> STEM (science, technology, engineering, or mathematics)</label>
+          <label><input type="radio" name="bg_field_focus" value="STEM"> STEM (science, technology, engineering, or
+            mathematics)</label>
           <label><input type="radio" name="bg_field_focus" value="Arts"> Arts / humanities</label>
           <label><input type="radio" name="bg_field_focus" value="Both"> Both</label>
           <label><input type="radio" name="bg_field_focus" value="Neither"> Neither / other</label>
@@ -839,12 +842,15 @@
       </div>
       <div class="section-label">Music Knowledge</div>
       <div class="instructions-box">
-        This section tests your music theory knowledge. There are <strong>35 questions</strong> across seven topics, each with increasing difficulty. Please answer every question to the best of your ability — there are right and wrong answers here.
+        This section tests your music theory knowledge. There are <strong>35 questions</strong> across seven topics,
+        each with increasing difficulty. Please answer every question to the best of your ability — there are right and
+        wrong answers here.
       </div>
       <div id="music-quiz-container"></div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" onclick="goToPhase(1)">← Back</button>
-        <button type="button" class="btn btn-primary" onclick="goToSongsFromQuiz()">Continue to Music Excerpts →</button>
+        <button type="button" class="btn btn-primary" onclick="goToSongsFromQuiz()">Continue to Music Excerpts
+          →</button>
       </div>
     </div><!-- /phase-1b -->
 
@@ -859,7 +865,8 @@
       </div>
       <div class="section-label">Music Excerpts</div>
       <div class="instructions-box">
-        You will now hear a series of short musical excerpts. Each may or may not include background information. Please
+        You will now hear a series of short musical excerpts. Each may or may not include background information on
+        whether the song is composed by a real human or is an AI-generated facsimile approximating some song. Please
         read any context carefully before rating.
         <strong>Rate each excerpt from 0 (lowest quality) to 100 (highest quality)</strong> based on your personal
         impression. There are no right or wrong answers.
@@ -2953,8 +2960,73 @@
       }
     ];
 
-    const SONGS_PER_RESPONDENT = 9;
+    const SONGS_PER_RESPONDENT = 60;
     const ATTN_CHECK_EVERY = 3;
+
+    // 60 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
+    // interleaved in groups of three so each consecutive triplet has one of each context type.
+    const PREDETERMINED_PAIRS = [
+      "s001_kit_clayton_nele_real",
+      "s021_lil_jon_the_east_side_boys_get_ai",
+      "s041_backstreet_boys_everybody_none",
+      "s002_skunk_anansie_weak_real",
+      "s022_chromatics_lady_ai",
+      "s042_eric_dolphy_john_lewis_the_str_none",
+      "s003_cecil_taylor_lena_real",
+      "s023_hanatarash_1969_ai",
+      "s043_valerie_dore_the_night_none",
+      "s004_mantronix_bassline_real",
+      "s024_lfo_freak_ai",
+      "s044_mosca_bax_none",
+      "s005_bell_biv_devoe_poison_real",
+      "s025_max_sedgley_happy_ai",
+      "s045_numb_hole_none",
+      "s006_destructo_party_up_real",
+      "s026_angels_and_agony_forever_ai",
+      "s046_king_oliver_shake_it_and_break_none",
+      "s007_lily_allen_the_fear_real",
+      "s027_omar_zed_bias_dancing_ai",
+      "s047_the_bamboos_happy_none",
+      "s008_grandmaster_flash_the_message_real",
+      "s028_mind_in_a_box_change_ai",
+      "s048_code_industry_fury_none",
+      "s009_cassius_1999_real",
+      "s029_seabound_castaway_ai",
+      "s049_dj_amok_nightmare_none",
+      "s010_the_sins_of_thy_beloved_foreve_real",
+      "s030_jimmy_eat_world_pain_ai",
+      "s050_the_shadows_of_knight_gloria_none",
+      "s011_shizuo_sweat_real",
+      "s031_angerfist_predator_legend_ai",
+      "s051_lasgo_something_none",
+      "s012_mc_shy_d_shake_it_real",
+      "s032_wes_montgomery_round_midnight_ai",
+      "s052_anthony_braxton_impressions_none",
+      "s013_tina_cousins_pray_real",
+      "s033_steve_roach_traveler_ai",
+      "s053_stereophonics_dakota_none",
+      "s014_autechre_nil_real",
+      "s034_paul_whiteman_changes_ai",
+      "s054_black_heat_the_jungle_none",
+      "s015_robert_miles_children_real",
+      "s035_rammstein_ich_will_ai",
+      "s055_shiva_chandra_pieces_none",
+      "s016_j_majik_wickaman_crazy_world_real",
+      "s036_avenged_sevenfold_nightmare_ai",
+      "s056_swedish_house_mafia_one_none",
+      "s017_hard_corps_dirty_real",
+      "s037_patsy_cline_crazy_ai",
+      "s057_cast_alright_none",
+      "s018_bearson_want_you_real",
+      "s038_devendra_banhart_baby_ai",
+      "s058_charley_patton_shake_it_and_br_none",
+      "s019_years_years_king_real",
+      "s039_travis_sing_ai",
+      "s059_housey_doingz_lounge_none",
+      "s020_rjd2_1976_real",
+      "s040_operation_ivy_sound_system_ai",
+      "s060_jimmy_macpartland_donna_none",
+    ];
 
 
     let selectedPairs = [];
@@ -2997,158 +3069,228 @@
     // ── MUSIC KNOWLEDGE QUIZ DATA ────────────────────────────────────
     const MUSIC_QUESTIONS = [
       // Section 1: Rhythm
-      { id: 'mq_rhythm_1', section: 'Rhythm', level: 1,
+      {
+        id: 'mq_rhythm_1', section: 'Rhythm', level: 1,
         question: 'What is the time signature for this bar?',
         image: 'sample-questions-png/Level1-Question1.png',
-        choices: ['2/4', '4/4', '3/4'], answer: '4/4' },
-      { id: 'mq_rhythm_2', section: 'Rhythm', level: 2,
+        choices: ['2/4', '4/4', '3/4'], answer: '4/4'
+      },
+      {
+        id: 'mq_rhythm_2', section: 'Rhythm', level: 2,
         question: 'Which of these three bars are grouped correctly?',
         image: 'sample-questions-png/Level2-Question1.png',
-        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '3rd bar' },
-      { id: 'mq_rhythm_3', section: 'Rhythm', level: 3,
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '3rd bar'
+      },
+      {
+        id: 'mq_rhythm_3', section: 'Rhythm', level: 3,
         question: 'What is the time signature for this bar?',
         image: 'sample-questions-png/Level3-Question1.png',
-        choices: ['3/8', '6/8', '2/4'], answer: '3/8' },
-      { id: 'mq_rhythm_4', section: 'Rhythm', level: 4,
+        choices: ['3/8', '6/8', '2/4'], answer: '3/8'
+      },
+      {
+        id: 'mq_rhythm_4', section: 'Rhythm', level: 4,
         question: 'In 9/16, how many dotted eighth-note (dotted-quaver) beats are in a bar?',
         image: null,
-        choices: ['3', '6', '9', '12'], answer: '3' },
-      { id: 'mq_rhythm_5', section: 'Rhythm', level: 5,
+        choices: ['3', '6', '9', '12'], answer: '3'
+      },
+      {
+        id: 'mq_rhythm_5', section: 'Rhythm', level: 5,
         question: 'Which of the below bars is grouped correctly?',
         image: 'sample-questions-png/Level5-Question1.png',
-        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '1st bar' },
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '1st bar'
+      },
 
       // Section 2: Pitch
-      { id: 'mq_pitch_1', section: 'Pitch', level: 1,
+      {
+        id: 'mq_pitch_1', section: 'Pitch', level: 1,
         question: 'What is the name of this note?',
         image: 'sample-questions-png/Level1-Question2.png',
-        choices: ['F#', 'D#', 'G', 'E'], answer: 'F#' },
-      { id: 'mq_pitch_2', section: 'Pitch', level: 2,
+        choices: ['F#', 'D#', 'G', 'E'], answer: 'F#'
+      },
+      {
+        id: 'mq_pitch_2', section: 'Pitch', level: 2,
         question: 'What is the name of this note?',
         image: 'sample-questions-png/Level2-Question2.png',
-        choices: ['A', 'B', 'C#', 'G'], answer: 'B' },
-      { id: 'mq_pitch_3', section: 'Pitch', level: 3,
+        choices: ['A', 'B', 'C#', 'G'], answer: 'B'
+      },
+      {
+        id: 'mq_pitch_3', section: 'Pitch', level: 3,
         question: '(True/False) Bars A and B are at the same pitch.',
         image: 'sample-questions-png/Level3-Question2.png',
-        choices: ['True', 'False'], answer: 'True' },
-      { id: 'mq_pitch_4', section: 'Pitch', level: 4,
+        choices: ['True', 'False'], answer: 'True'
+      },
+      {
+        id: 'mq_pitch_4', section: 'Pitch', level: 4,
         question: 'What is the name of this note?',
         image: 'sample-questions-png/Level4-Question2.png',
-        choices: ['D sharp', 'D double sharp', 'B double sharp', 'C sharp'], answer: 'B double sharp' },
-      { id: 'mq_pitch_5', section: 'Pitch', level: 5,
+        choices: ['D sharp', 'D double sharp', 'B double sharp', 'C sharp'], answer: 'B double sharp'
+      },
+      {
+        id: 'mq_pitch_5', section: 'Pitch', level: 5,
         question: 'Which of the three bars shows the correct enharmonic equivalent of E?',
         image: 'sample-questions-png/Level5-Question2.png',
-        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '2nd bar' },
+        choices: ['1st bar', '2nd bar', '3rd bar'], answer: '2nd bar'
+      },
 
       // Section 3: Keys and Scales
-      { id: 'mq_keys_1', section: 'Keys and Scales', level: 1,
+      {
+        id: 'mq_keys_1', section: 'Keys and Scales', level: 1,
         question: '(True/False) This is the 2nd scale degree of G Major.',
         image: 'sample-questions-png/Level1-Question3.png',
-        choices: ['True', 'False'], answer: 'True' },
-      { id: 'mq_keys_2', section: 'Keys and Scales', level: 2,
+        choices: ['True', 'False'], answer: 'True'
+      },
+      {
+        id: 'mq_keys_2', section: 'Keys and Scales', level: 2,
         question: 'Which of these is the correctly written key signature for A major?',
         image: 'sample-questions-png/Level2-Question3.png',
-        choices: ['1st key signature', '2nd key signature', '3rd key signature', '4th key signature'], answer: '3rd key signature' },
-      { id: 'mq_keys_3', section: 'Keys and Scales', level: 3,
+        choices: ['1st key signature', '2nd key signature', '3rd key signature', '4th key signature'], answer: '3rd key signature'
+      },
+      {
+        id: 'mq_keys_3', section: 'Keys and Scales', level: 3,
         question: 'What key is this melody in?',
         image: 'sample-questions-png/Level3-Question3.png',
-        choices: ['E-flat major', 'A-flat major', 'C minor', 'D minor'], answer: 'A-flat major' },
-      { id: 'mq_keys_4', section: 'Keys and Scales', level: 4,
+        choices: ['E-flat major', 'A-flat major', 'C minor', 'D minor'], answer: 'A-flat major'
+      },
+      {
+        id: 'mq_keys_4', section: 'Keys and Scales', level: 4,
         question: '(True/False) This is the correctly written scale for G# melodic minor, ascending.',
         image: 'sample-questions-png/Level4-Question3.png',
-        choices: ['True', 'False'], answer: 'False' },
-      { id: 'mq_keys_5', section: 'Keys and Scales', level: 5,
+        choices: ['True', 'False'], answer: 'False'
+      },
+      {
+        id: 'mq_keys_5', section: 'Keys and Scales', level: 5,
         question: 'Which of the below options is the correctly written key signature of B major?',
         image: 'sample-questions-png/Level5-Question3.png',
-        choices: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], answer: 'Option 4' },
+        choices: ['Option 1', 'Option 2', 'Option 3', 'Option 4'], answer: 'Option 4'
+      },
 
       // Section 4: Intervals
-      { id: 'mq_intervals_1', section: 'Intervals', level: 1,
+      {
+        id: 'mq_intervals_1', section: 'Intervals', level: 1,
         question: 'What is the name of the note a perfect 4th above the note shown?',
         image: 'sample-questions-png/Level1-Question4.png',
-        choices: ['A', 'G', 'F', 'G#'], answer: 'G' },
-      { id: 'mq_intervals_2', section: 'Intervals', level: 2,
+        choices: ['A', 'G', 'F', 'G#'], answer: 'G'
+      },
+      {
+        id: 'mq_intervals_2', section: 'Intervals', level: 2,
         question: 'What number interval is this?',
         image: 'sample-questions-png/Level2-Question4.png',
-        choices: ['5th', '6th', '7th', '8th/8ve'], answer: '7th' },
-      { id: 'mq_intervals_3', section: 'Intervals', level: 3,
+        choices: ['5th', '6th', '7th', '8th/8ve'], answer: '7th'
+      },
+      {
+        id: 'mq_intervals_3', section: 'Intervals', level: 3,
         question: 'What type of interval is this?',
         image: 'sample-questions-png/Level3-Question4.png',
-        choices: ['perfect', 'major', 'minor'], answer: 'perfect' },
-      { id: 'mq_intervals_4', section: 'Intervals', level: 4,
+        choices: ['perfect', 'major', 'minor'], answer: 'perfect'
+      },
+      {
+        id: 'mq_intervals_4', section: 'Intervals', level: 4,
         question: 'What type of interval is this?',
         image: 'sample-questions-png/Level4-Question4.png',
-        choices: ['perfect', 'major', 'minor', 'diminished', 'augmented'], answer: 'augmented' },
-      { id: 'mq_intervals_5', section: 'Intervals', level: 5,
+        choices: ['perfect', 'major', 'minor', 'diminished', 'augmented'], answer: 'augmented'
+      },
+      {
+        id: 'mq_intervals_5', section: 'Intervals', level: 5,
         question: 'What is the name of this interval?',
         image: 'sample-questions-png/Level5-Question4.png',
-        choices: ['major 10th', 'compound perfect 4th', 'augmented 11th', 'compound diminished 4th'], answer: 'compound perfect 4th' },
+        choices: ['major 10th', 'compound perfect 4th', 'augmented 11th', 'compound diminished 4th'], answer: 'compound perfect 4th'
+      },
 
       // Section 5: Chords
-      { id: 'mq_chords_1', section: 'Chords', level: 1,
+      {
+        id: 'mq_chords_1', section: 'Chords', level: 1,
         question: 'What is the name of the note that would complete the incomplete D major triad shown?',
         image: 'sample-questions-png/Level1-Question5.png',
-        choices: ['D', 'A', 'F#', 'C'], answer: 'D' },
-      { id: 'mq_chords_2', section: 'Chords', level: 2,
+        choices: ['D', 'A', 'F#', 'C'], answer: 'D'
+      },
+      {
+        id: 'mq_chords_2', section: 'Chords', level: 2,
         question: 'What key is this tonic triad from?',
         image: 'sample-questions-png/Level2-Question5.png',
-        choices: ['B-flat major', 'C major', 'E-flat major', 'E minor'], answer: 'E-flat major' },
-      { id: 'mq_chords_3', section: 'Chords', level: 3,
+        choices: ['B-flat major', 'C major', 'E-flat major', 'E minor'], answer: 'E-flat major'
+      },
+      {
+        id: 'mq_chords_3', section: 'Chords', level: 3,
         question: 'What key is this tonic triad from?',
         image: 'sample-questions-png/Level3-Question5.png',
-        choices: ['E-flat major', 'A-flat major', 'C minor', 'B-flat major'], answer: 'A-flat major' },
-      { id: 'mq_chords_4', section: 'Chords', level: 4,
+        choices: ['E-flat major', 'A-flat major', 'C minor', 'B-flat major'], answer: 'A-flat major'
+      },
+      {
+        id: 'mq_chords_4', section: 'Chords', level: 4,
         question: '(True/False) This is the subdominant triad in F# minor.',
         image: 'sample-questions-png/Level4-Question5.png',
-        choices: ['True', 'False'], answer: 'False' },
-      { id: 'mq_chords_5', section: 'Chords', level: 5,
+        choices: ['True', 'False'], answer: 'False'
+      },
+      {
+        id: 'mq_chords_5', section: 'Chords', level: 5,
         question: 'Which of the below chords would be most suitable for the melody shown?',
         image: 'sample-questions-png/Level5-Question5.png',
-        choices: ['I', 'II', 'IV', 'V'], answer: 'II' },
+        choices: ['I', 'II', 'IV', 'V'], answer: 'II'
+      },
 
       // Section 6: Terms and Signs
-      { id: 'mq_terms_1', section: 'Terms and Signs', level: 1,
+      {
+        id: 'mq_terms_1', section: 'Terms and Signs', level: 1,
         question: 'What does "adagio" mean?',
         image: null,
-        choices: ['slow', 'quick', 'at a medium speed', 'fairly quick'], answer: 'slow' },
-      { id: 'mq_terms_2', section: 'Terms and Signs', level: 2,
+        choices: ['slow', 'quick', 'at a medium speed', 'fairly quick'], answer: 'slow'
+      },
+      {
+        id: 'mq_terms_2', section: 'Terms and Signs', level: 2,
         question: 'What does "allegretto" mean?',
         image: null,
-        choices: ['slow', 'fairly quick', 'gradually getting quicker', 'slow and stately'], answer: 'fairly quick' },
-      { id: 'mq_terms_3', section: 'Terms and Signs', level: 3,
+        choices: ['slow', 'fairly quick', 'gradually getting quicker', 'slow and stately'], answer: 'fairly quick'
+      },
+      {
+        id: 'mq_terms_3', section: 'Terms and Signs', level: 3,
         question: 'What does "prestissimo" mean?',
         image: null,
-        choices: ['heavy', 'fast', 'very fast', 'very loud'], answer: 'very fast' },
-      { id: 'mq_terms_4', section: 'Terms and Signs', level: 4,
+        choices: ['heavy', 'fast', 'very fast', 'very loud'], answer: 'very fast'
+      },
+      {
+        id: 'mq_terms_4', section: 'Terms and Signs', level: 4,
         question: 'What does "tempo rubato" mean?',
         image: null,
-        choices: ['with some freedom of time', 'in time', 'as before', 'at a comfortable speed'], answer: 'with some freedom of time' },
-      { id: 'mq_terms_5', section: 'Terms and Signs', level: 5,
+        choices: ['with some freedom of time', 'in time', 'as before', 'at a comfortable speed'], answer: 'with some freedom of time'
+      },
+      {
+        id: 'mq_terms_5', section: 'Terms and Signs', level: 5,
         question: 'What is the most appropriate name for this written-out ornament marked with a bracket?',
         image: 'sample-questions-png/Level5-Question6.png',
-        choices: ['appoggiatura', 'upper turn', 'trill', 'upper mordent'], answer: 'trill' },
+        choices: ['appoggiatura', 'upper turn', 'trill', 'upper mordent'], answer: 'trill'
+      },
 
       // Section 7: Music in Context
-      { id: 'mq_context_1', section: 'Music in Context', level: 1,
+      {
+        id: 'mq_context_1', section: 'Music in Context', level: 1,
         question: '(True/False) The melody shown gets gradually louder towards the end.',
         image: 'sample-questions-png/Level1-Question7.png',
-        choices: ['True', 'False'], answer: 'False' },
-      { id: 'mq_context_2', section: 'Music in Context', level: 2,
+        choices: ['True', 'False'], answer: 'False'
+      },
+      {
+        id: 'mq_context_2', section: 'Music in Context', level: 2,
         question: 'How many times does the 7th degree of the scale occur in the melody shown?',
         image: 'sample-questions-png/Level2-Question7.png',
-        choices: ['3', '4', '5', '6'], answer: '5' },
-      { id: 'mq_context_3', section: 'Music in Context', level: 3,
+        choices: ['3', '4', '5', '6'], answer: '5'
+      },
+      {
+        id: 'mq_context_3', section: 'Music in Context', level: 3,
         question: 'Which bar in the melody shown has a dotted eighth-note (dotted quaver)?',
         image: 'sample-questions-png/Level3-Question7.png',
-        choices: ['Bar 3', 'Bar 4', 'Bar 5', 'Bar 7'], answer: 'Bar 5' },
-      { id: 'mq_context_4', section: 'Music in Context', level: 4,
+        choices: ['Bar 3', 'Bar 4', 'Bar 5', 'Bar 7'], answer: 'Bar 5'
+      },
+      {
+        id: 'mq_context_4', section: 'Music in Context', level: 4,
         question: 'In the melody shown, how many times does the leading note in the key of C# minor occur?',
         image: 'sample-questions-png/Level4-Question7.png',
-        choices: ['3', '4', '5', '6'], answer: '4' },
-      { id: 'mq_context_5', section: 'Music in Context', level: 5,
+        choices: ['3', '4', '5', '6'], answer: '4'
+      },
+      {
+        id: 'mq_context_5', section: 'Music in Context', level: 5,
         question: '(True/False) The music shown ends on the subdominant chord of F# minor.',
         image: 'sample-questions-png/Level5-Question7.png',
-        choices: ['True', 'False'], answer: 'False' },
+        choices: ['True', 'False'], answer: 'False'
+      },
     ];
 
     function buildMusicQuiz() {
@@ -3254,7 +3396,7 @@
         responseData[q.id] = selected === q.answer ? '1' : '0';
       });
 
-      selectedPairs = shuffle(ALL_SONG_CONTEXT_PAIRS).slice(0, Math.min(SONGS_PER_RESPONDENT, ALL_SONG_CONTEXT_PAIRS.length));
+      selectedPairs = shuffle(PREDETERMINED_PAIRS.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)));
       buildSongCards();
       goToPhase(2);
     }
