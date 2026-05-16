@@ -975,8 +975,13 @@
         You will now hear a series of short musical excerpts. Each may or may not include background information on
         whether the song is composed by a real human or is an AI-generated facsimile approximating some song. Please
         read any context carefully before rating.
-        <strong>Rate each excerpt from 0 (lowest quality) to 100 (highest quality)</strong> based on your personal
-        impression. There are no right or wrong answers.
+        <p style="margin-top:10px;">For each excerpt, rate your perception across <strong>four dimensions</strong> using a 1–5 scale (1 = Strongly Disagree, 5 = Strongly Agree). There are no right or wrong answers — we are interested in your honest impressions.</p>
+        <ul style="margin:14px 0 0 18px; line-height:1.85;">
+          <li style="margin-bottom:10px;"><strong>Authenticity &amp; Quality</strong> — How genuine, emotionally expressive, and artistically crafted is this music? A high rating (4–5) means the music feels soulful, original, moving, and meaningful. A low rating (1–2) means the music feels mechanical, formulaic, hollow, or emotionally inert.</li>
+          <li style="margin-bottom:10px;"><strong>Ethics &amp; Copyright</strong> — How ethically appropriate is this music in terms of intellectual property, consent, and fair attribution? A high rating (4–5) means the music was produced transparently, with proper licensing and fair compensation to artists. A low rating (1–2) reflects concerns about plagiarism, copyright infringement, scraping of artists' work without consent, or exploitation of creative labour.</li>
+          <li style="margin-bottom:10px;"><strong>Economic &amp; Job Impact</strong> — How do you feel about the economic impact of this type of music on working musicians and the creative economy? A high rating (4–5) means this music empowers, assists, or supplements human creativity and lowers barriers to music-making. A low rating (1–2) reflects concerns that this type of music threatens musicians' livelihoods, devalues their work, or risks displacing them from the industry.</li>
+          <li><strong>Corporate &amp; Platform</strong> — How do you feel about the corporate and platform practices behind the creation or distribution of music like this? A high rating (4–5) reflects a sense of innovation, responsibility, and fair treatment of artists. A low rating (1–2) reflects concerns about exploitation, monopolistic control, prioritising profit over artists, or treating music as a commodity.</li>
+        </ul>
       </div>
       <div id="songs-container"></div>
       <div class="btn-row">
@@ -3557,23 +3562,34 @@
         } else {
           ctxHtml = '<div><div class="ctx-label muted">Background Information</div><div class="ctx-box no-ctx">No background information is available for this piece.</div></div>';
         }
-        const rSliderId = slotPfx + '_slider';
-        const rDisplayId = slotPfx + '_display';
         const heardName = slotPfx + '_heard_before';
         const card = document.createElement('div');
         card.className = 'song-card';
         card.id = 'song-card-slot-' + slotKey(slotNum);
+        const RATING_ASPECTS = [
+          { key: 'aq', label: 'Authenticity &amp; Quality: This music feels genuine, emotionally expressive, and artistically crafted.' },
+          { key: 'ec', label: 'Ethics &amp; Copyright: This music was produced in an ethically appropriate way, respecting intellectual property and fair attribution.' },
+          { key: 'ej', label: 'Economic &amp; Job Impact: Music like this has a positive economic impact on working musicians and the broader creative economy.' },
+          { key: 'cp', label: 'Corporate &amp; Platform: The corporate and platform practices behind music like this are responsible and fair to artists.' },
+        ];
+        const aspectLikertHtml = RATING_ASPECTS.map(a => {
+          const nm = slotPfx + '_' + a.key;
+          return '<div style="margin-bottom:16px;"><div class="q-label" style="margin-bottom:10px;">' + a.label + '<span class="req">*</span></div>' +
+            '<div class="likert-row">' +
+            [1,2,3,4,5].map(v => '<label><input type="radio" name="' + nm + '" value="' + v + '"><div class="likert-btn">' + v + '</div></label>').join('') +
+            '</div><div class="likert-ends"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>' +
+            '<div class="err" id="err-' + nm + '">Please select a value.</div></div>';
+        }).join('');
         card.innerHTML =
           '<div class="song-card-head">Excerpt ' + slotNum + ' of ' + selectedPairs.length + '</div>' +
           '<div class="song-card-body">' +
           ctxHtml +
           '<div><div class="ctx-label muted" style="margin-bottom:5px;">Listen</div><audio controls preload="none" src="' + pair.audioUrl + '"></audio></div>' +
-          '<div><div class="q-label" style="margin-bottom:10px;">Rate this excerpt (0 = lowest quality, 100 = highest quality)<span class="req">*</span></div>' +
-          '<div class="range-row"><input type="range" min="0" max="100" value="50" id="' + rSliderId + '" name="' + slotPfx + '_rating" oninput="document.getElementById(\'' + rDisplayId + '\').textContent=this.value"><div class="range-val" id="' + rDisplayId + '">50</div></div>' +
-          '<div class="range-ends"><span>0 — Lowest quality</span><span>100 — Highest quality</span></div>' +
-          '<div class="err" id="err-' + slotPfx + '_heard">Please answer both questions for this excerpt.</div></div>' +
+          '<div><div class="ctx-label" style="margin-bottom:14px;">Rate this excerpt on each of the following dimensions<span class="req">*</span></div>' +
+          aspectLikertHtml + '</div>' +
           '<div><div class="q-label" style="margin-bottom:8px;">Have you heard this piece before?<span class="req">*</span></div>' +
-          '<div class="pill-row"><label><input type="radio" name="' + heardName + '" value="Yes"> Yes</label><label><input type="radio" name="' + heardName + '" value="No"> No</label><label><input type="radio" name="' + heardName + '" value="Unsure"> Unsure</label></div></div>' +
+          '<div class="pill-row"><label><input type="radio" name="' + heardName + '" value="Yes"> Yes</label><label><input type="radio" name="' + heardName + '" value="No"> No</label><label><input type="radio" name="' + heardName + '" value="Unsure"> Unsure</label></div>' +
+          '<div class="err" id="err-' + slotPfx + '_heard">Please answer this question for this excerpt.</div></div>' +
           '</div>';
         container.appendChild(card);
       });
@@ -3593,10 +3609,16 @@
       selectedPairs.forEach((pair, i) => {
         const slotNum = i + 1;
         const slotPfx = 'song_' + slotKey(slotNum);
+        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+          const val = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked');
+          const aspBad = !val;
+          showErr('err-' + slotPfx + '_' + asp, aspBad);
+          if (aspBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
+        });
         const heard = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked');
-        const bad = !heard;
-        showErr('err-' + slotPfx + '_heard', bad);
-        if (bad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
+        const heardBad = !heard;
+        showErr('err-' + slotPfx + '_heard', heardBad);
+        if (heardBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
       });
       if (!ok) { firstBad?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
@@ -3606,14 +3628,16 @@
         const slotPfx = 'song_' + slotKey(slotNum);
         responseData[slotPfx + '_id'] = pair.id;
         responseData[slotPfx + '_context_type'] = pair.contextType;
-        responseData[slotPfx + '_rating'] = parseInt(document.getElementById(slotPfx + '_slider')?.value ?? 50);
+        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+          responseData[slotPfx + '_' + asp] = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked')?.value ?? '';
+        });
         responseData[slotPfx + '_heard_before'] = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked')?.value ?? '';
         const attnInfo = attnSlotMap[slotNum];
         responseData[slotPfx + '_attn_check'] = attnInfo ? document.getElementById(attnInfo.aId + '_slider')?.value ?? '' : '';
       });
       for (let s = selectedPairs.length + 1; s <= SONGS_PER_RESPONDENT; s++) {
         const slotPfx = 'song_' + slotKey(s);
-        ['_id', '_context_type', '_rating', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
+        ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
       }
       responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
       goToPhase(3);
