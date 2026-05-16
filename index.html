@@ -983,6 +983,80 @@
           <li><strong>Corporate &amp; Platform</strong> — How do you feel about the corporate and platform practices behind the creation or distribution of music like this? A high rating (4–5) reflects a sense of innovation, responsibility, and fair treatment of artists. A low rating (1–2) reflects concerns about exploitation, monopolistic control, prioritising profit over artists, or treating music as a commodity.</li>
         </ul>
       </div>
+      <div class="section-label" style="margin-top:8px;">Your Priorities</div>
+      <div class="instructions-box" style="margin-bottom:20px;">
+        Before listening to the excerpts, please tell us how much each of the following dimensions affects your personal perception of music quality. Use a 1–5 scale: <strong>1 = this dimension has no effect on how you perceive music</strong>; <strong>5 = this dimension has a very strong effect</strong>. Extreme examples are provided below each question to anchor the scale.
+      </div>
+
+      <div class="q-card" id="card-imp-aq">
+        <div class="q-label">How much does the <em>authenticity and artistic quality</em> of music affect your perception of it?<span class="req">*</span></div>
+        <div class="likert-row">
+          <label><input type="radio" name="imp_aq" value="1"><div class="likert-btn">1</div></label>
+          <label><input type="radio" name="imp_aq" value="2"><div class="likert-btn">2</div></label>
+          <label><input type="radio" name="imp_aq" value="3"><div class="likert-btn">3</div></label>
+          <label><input type="radio" name="imp_aq" value="4"><div class="likert-btn">4</div></label>
+          <label><input type="radio" name="imp_aq" value="5"><div class="likert-btn">5</div></label>
+        </div>
+        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+        <div style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+          <strong>Rating of 1:</strong> You enjoy a piece assembled mechanically without any creative decisions just as much as a deeply original, carefully crafted work — the level of artistic effort and expressiveness makes no difference to your enjoyment.<br><br>
+          <strong>Rating of 5:</strong> Discovering that a piece was formulaic, derivative, and produced without any genuine artistic intent would completely destroy your enjoyment of it, regardless of how it sounds on first listen.
+        </div>
+        <div class="err" id="err-imp-aq">Please select a value.</div>
+      </div>
+
+      <div class="q-card" id="card-imp-ec">
+        <div class="q-label">How much do <em>ethics and copyright considerations</em> affect your perception of a piece of music?<span class="req">*</span></div>
+        <div class="likert-row">
+          <label><input type="radio" name="imp_ec" value="1"><div class="likert-btn">1</div></label>
+          <label><input type="radio" name="imp_ec" value="2"><div class="likert-btn">2</div></label>
+          <label><input type="radio" name="imp_ec" value="3"><div class="likert-btn">3</div></label>
+          <label><input type="radio" name="imp_ec" value="4"><div class="likert-btn">4</div></label>
+          <label><input type="radio" name="imp_ec" value="5"><div class="likert-btn">5</div></label>
+        </div>
+        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+        <div style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+          <strong>Rating of 1:</strong> You would enjoy a song just as much knowing that its composer deliberately plagiarised a melody from another artist, claimed sole authorship, and paid no compensation whatsoever — the composer's ethics and any copyright violations have no bearing on your enjoyment.<br><br>
+          <strong>Rating of 5:</strong> Learning that a piece was built from stolen material, created in clear violation of copyright, and without any consent or compensation to the original artists would make it impossible for you to enjoy the music, no matter how it sounds.
+        </div>
+        <div class="err" id="err-imp-ec">Please select a value.</div>
+      </div>
+
+      <div class="q-card" id="card-imp-ej">
+        <div class="q-label">How much does the <em>economic impact on musicians and the creative economy</em> affect your perception of a piece of music?<span class="req">*</span></div>
+        <div class="likert-row">
+          <label><input type="radio" name="imp_ej" value="1"><div class="likert-btn">1</div></label>
+          <label><input type="radio" name="imp_ej" value="2"><div class="likert-btn">2</div></label>
+          <label><input type="radio" name="imp_ej" value="3"><div class="likert-btn">3</div></label>
+          <label><input type="radio" name="imp_ej" value="4"><div class="likert-btn">4</div></label>
+          <label><input type="radio" name="imp_ej" value="5"><div class="likert-btn">5</div></label>
+        </div>
+        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+        <div style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+          <strong>Rating of 1:</strong> Knowing that widespread adoption of this type of music has caused thousands of professional musicians to permanently lose their livelihoods would not diminish your enjoyment of it in any way — the economic consequences for others are entirely irrelevant to your personal listening experience.<br><br>
+          <strong>Rating of 5:</strong> You would be unable to enjoy a piece knowing that listening to or supporting music like this directly contributes to displacing working musicians from the creative economy and destroying their careers.
+        </div>
+        <div class="err" id="err-imp-ej">Please select a value.</div>
+      </div>
+
+      <div class="q-card" id="card-imp-cp">
+        <div class="q-label">How much do the <em>corporate and platform practices</em> behind music affect your perception of it?<span class="req">*</span></div>
+        <div class="likert-row">
+          <label><input type="radio" name="imp_cp" value="1"><div class="likert-btn">1</div></label>
+          <label><input type="radio" name="imp_cp" value="2"><div class="likert-btn">2</div></label>
+          <label><input type="radio" name="imp_cp" value="3"><div class="likert-btn">3</div></label>
+          <label><input type="radio" name="imp_cp" value="4"><div class="likert-btn">4</div></label>
+          <label><input type="radio" name="imp_cp" value="5"><div class="likert-btn">5</div></label>
+        </div>
+        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+        <div style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+          <strong>Rating of 1:</strong> You would enjoy a piece equally even knowing it was produced by a company that locks artists into exploitative contracts, pays minimal royalties, and treats music purely as a commercial commodity — corporate practices are entirely irrelevant to your perception of the music itself.<br><br>
+          <strong>Rating of 5:</strong> Knowing that the company behind a piece of music engages in monopolistic, exploitative practices toward artists and actively undermines the creative ecosystem would entirely change how you feel about it, making genuine enjoyment impossible.
+        </div>
+        <div class="err" id="err-imp-cp">Please select a value.</div>
+      </div>
+
+      <div class="section-label" style="margin-top:8px;">Music Excerpts</div>
       <div id="songs-container"></div>
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" onclick="goToPhase('1b')">← Back</button>
@@ -3599,6 +3673,13 @@
     function goToReflection() {
       let ok = true;
       let firstBad = null;
+      [['imp_aq', 'imp-aq'], ['imp_ec', 'imp-ec'], ['imp_ej', 'imp-ej'], ['imp_cp', 'imp-cp']].forEach(([name, cardId]) => {
+        const val = document.querySelector('input[name="' + name + '"]:checked');
+        const bad = !val;
+        showErr('err-' + cardId, bad);
+        markCard('card-' + cardId, bad);
+        if (bad) { ok = false; firstBad = firstBad || document.getElementById('card-' + cardId); }
+      });
       Object.entries(attnSlotMap).forEach(([slotNum, { aId, target }]) => {
         const slider = document.getElementById(aId + '_slider');
         if (!slider) return;
@@ -3640,6 +3721,9 @@
         ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
       }
       responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
+      ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+        responseData['imp_' + asp] = document.querySelector('input[name="imp_' + asp + '"]:checked')?.value ?? '';
+      });
       goToPhase(3);
     }
 
