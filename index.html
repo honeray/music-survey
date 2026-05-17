@@ -3632,7 +3632,7 @@
         if (pair.contextType === 'real' && pair.context) {
           ctxHtml = '<div><div class="ctx-label">Background Information</div><div class="ctx-box">' + pair.context + '</div></div>';
         } else if (pair.contextType === 'ai') {
-          ctxHtml = '<div><div class="ctx-label">Background Information</div><div class="ctx-box">This song is AI-generated.</div></div>';
+          ctxHtml = '<div><div class="ctx-label">Background Information</div><div class="ctx-box">' + pair.context + '</div></div>';
         } else {
           ctxHtml = '<div><div class="ctx-label muted">Background Information</div><div class="ctx-box no-ctx">No background information is available for this piece.</div></div>';
         }
