@@ -3646,12 +3646,48 @@
           { key: 'ej', label: 'Economic &amp; Job Impact: Music like this has a positive economic impact on working musicians and the broader creative economy.' },
           { key: 'cp', label: 'Corporate &amp; Platform: The corporate and platform practices behind music like this are responsible and fair to artists.' },
         ];
+        const ASPECT_ANCHORS = {
+          aq: {
+            ai:   { low: 'Despite the detailed prompt, the music sounds mechanical and emotionally hollow — the AI process has produced something formulaic and inexpressive.',
+                    high: 'Even knowing it was AI-generated from a prompt, the music still feels genuinely moving, creative, and artistically compelling.' },
+            real: { low: 'Despite the human backstory, the music still sounds formulaic, hollow, or lacking in genuine artistic vision or emotional depth.',
+                    high: 'The music feels deeply authentic, emotionally expressive, and the product of real creative artistry and intentional craft.' },
+            none: { low: 'Purely from what you hear, the music sounds mechanical, formulaic, or emotionally inert — it lacks any sense of authentic artistic vision.',
+                    high: 'Purely from what you hear, the music feels genuine, soulful, and artistically crafted — it conveys real emotion and creative intent.' }
+          },
+          ec: {
+            ai:   { low: 'You believe this AI music was trained on artists\' work without consent, violating copyright and denying fair attribution to those whose creativity informed it.',
+                    high: 'You believe this AI music was produced transparently, using properly licensed material, with fair treatment of any artists whose work influenced the model.' },
+            real: { low: 'You have serious concerns that this music failed to properly credit collaborators, lifted ideas without attribution, or was produced in ways that violated intellectual property.',
+                    high: 'This human-made music appears to have been produced with full respect for intellectual property, with proper attribution to all collaborators and no copyright concerns.' },
+            none: { low: 'Based on what you can tell, you have serious concerns about whether this music respects the rights and contributions of other artists.',
+                    high: 'Based on what you can assess, this music appears to have been made in an ethically sound way, with proper respect for intellectual property and fair attribution.' }
+          },
+          ej: {
+            ai:   { low: 'AI music like this threatens musicians\' livelihoods, devalues creative labour, and risks displacing working musicians and composers from the industry.',
+                    high: 'AI music like this opens new creative possibilities, lowers barriers to music-making, and supplements rather than replaces human musicians.' },
+            real: { low: 'This music, or the conditions under which it was produced and distributed, contributes negatively to the livelihoods and opportunities of working musicians.',
+                    high: 'This music, and the way it was made and shared, has a genuinely positive effect on the creative economy — supporting, not undermining, working musicians.' },
+            none: { low: 'Based on your assessment, music like this — whatever its origin — has a negative economic impact on working musicians and the broader creative ecosystem.',
+                    high: 'Based on your assessment, music like this supports rather than harms working musicians and contributes positively to the creative economy.' }
+          },
+          cp: {
+            ai:   { low: 'The company or platform behind AI music like this engages in exploitative practices, treats music as a mere commodity, or actively undermines artists\' interests.',
+                    high: 'The platform behind AI music like this acts responsibly, treats artists fairly, is transparent about its practices, and genuinely supports the creative ecosystem.' },
+            real: { low: 'The label, distributor, or platform behind this music uses exploitative or monopolistic practices that harm artists and prioritise profit over creative integrity.',
+                    high: 'The corporate entities behind this music act with transparency and genuine respect for artists, sharing revenue fairly and supporting the creative community.' },
+            none: { low: 'Based on your general assessment, the corporate and platform practices behind music like this are irresponsible, exploitative, or harmful to artists.',
+                    high: 'Based on your general assessment, the entities behind music like this treat artists fairly, act responsibly, and contribute positively to the creative ecosystem.' }
+          }
+        };
         const aspectLikertHtml = RATING_ASPECTS.map(a => {
           const nm = slotPfx + '_' + a.key;
+          const anchors = ASPECT_ANCHORS[a.key][pair.contextType] || ASPECT_ANCHORS[a.key].none;
           return '<div style="margin-bottom:16px;"><div class="q-label" style="margin-bottom:10px;">' + a.label + '<span class="req">*</span></div>' +
             '<div class="likert-row">' +
             [1,2,3,4,5].map(v => '<label><input type="radio" name="' + nm + '" value="' + v + '"><div class="likert-btn">' + v + '</div></label>').join('') +
             '</div><div class="likert-ends"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>' +
+            '<div style="margin-top:10px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;"><strong>Rating of 1:</strong> ' + anchors.low + '<br><br><strong>Rating of 5:</strong> ' + anchors.high + '</div>' +
             '<div class="err" id="err-' + nm + '">Please select a value.</div></div>';
         }).join('');
         card.innerHTML =
