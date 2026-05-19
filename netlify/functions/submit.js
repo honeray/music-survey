@@ -4,6 +4,8 @@ const COLUMNS = [
   'bg_discovery_youtube', 'bg_discovery_spotify', 'bg_discovery_applemusic', 'bg_discovery_netease',
   'bg_discovery_tiktok', 'bg_discovery_bilibili', 'bg_discovery_bandcamp', 'bg_discovery_other_cb',
   'bg_discovery_platforms', 'bg_discovery_other', 'bg_heard_ai_before', 'bg_education', 'bg_field_focus',
+  'bg_teach_instrument', 'bg_teach_course', 'bg_play_instrument',
+  'bg_play_duration', 'bg_performed_solo', 'bg_performed_ensemble', 'bg_owned_items',
   'mq_rhythm_1', 'mq_rhythm_2', 'mq_rhythm_3', 'mq_rhythm_4', 'mq_rhythm_5',
   'mq_pitch_1', 'mq_pitch_2', 'mq_pitch_3', 'mq_pitch_4', 'mq_pitch_5',
   'mq_keys_1', 'mq_keys_2', 'mq_keys_3', 'mq_keys_4', 'mq_keys_5',
