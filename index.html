@@ -608,10 +608,88 @@
       display: block;
       background: #fff;
     }
+
+    #resume-banner {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      background: #fffdf8;
+      border-bottom: 1px solid var(--rule);
+      padding: 10px 20px;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    #resume-banner strong {
+      font-family: monospace;
+      font-size: 1rem;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+
+    #resume-banner .copy-btn {
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 3px 10px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: var(--ink-soft);
+    }
+
+    #resume-banner .copy-btn:hover {
+      background: var(--accent-light);
+    }
+
+    #resume-inline {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 24px;
+      font-size: 0.875rem;
+    }
+
+    #resume-inline summary {
+      cursor: pointer;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+
+    #resume-inline-body {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    #resume-code-input {
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 6px 10px;
+      font-family: monospace;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      width: 140px;
+      background: #fff;
+    }
   </style>
 </head>
 
 <body>
+  <div id="resume-banner">
+    <span>Resume code:</span>
+    <strong id="resume-code-display"></strong>
+    <button class="copy-btn" onclick="copyResumeCode()">Copy</button>
+    <span id="resume-copy-confirm" style="display:none; color:var(--success); font-size:0.8rem;">Copied!</span>
+    <span style="flex:1;"></span>
+    <span style="font-size:0.8rem;">Save this code to return to the survey later.</span>
+  </div>
   <div id="survey-wrap">
 
     <!-- PHASE 1 — Background Questions -->
@@ -620,6 +698,17 @@
         <h1>Music <em>Perception</em> Study</h1>
         <p>Academic research · Estimated time: 1.5-2.5 hours · All responses are anonymous.</p>
       </div>
+      <details id="resume-inline">
+        <summary>Resuming a previous session?</summary>
+        <div id="resume-inline-body">
+          <input type="text" id="resume-code-input" placeholder="e.g. MXQT-7821" maxlength="9" autocomplete="off"
+            spellcheck="false">
+          <button type="button" class="btn btn-secondary" style="padding:6px 14px; font-size:0.85rem;"
+            onclick="resumeFromCode()">Restore</button>
+          <span id="resume-error" style="display:none; color:var(--accent); font-size:0.85rem;">No saved session found
+            for that code.</span>
+        </div>
+      </details>
       <div class="progress-wrap">
         <div class="progress-meta"><span>Section 1 of 4 — Background</span><span>Step 1</span></div>
         <div class="progress-track">
@@ -809,6 +898,8 @@
           <label><input type="radio" name="bg_education" value="Postgraduate (Master's)"> Postgraduate
             (Master's)</label>
           <label><input type="radio" name="bg_education" value="Postgraduate (PhD)"> Postgraduate (PhD)</label>
+          <label><input type="radio" name="bg_education" value="Professional degree (MD, JD, etc.)"> Professional degree
+            (MD, JD, etc.)</label>
           <label><input type="radio" name="bg_education" value="Other"> Other</label>
         </div>
         <div class="err" id="err-q9">Please select an option.</div>
@@ -977,7 +1068,7 @@
         read any context carefully before rating.
         <p style="margin-top:10px;">For each excerpt, rate your perception across <strong>four dimensions</strong> using
           a 1–5 scale (1 = Strongly Disagree, 5 = Strongly Agree). There are no right or wrong answers — we are
-          interested in your honest impressions.</p>
+          interested in your honest impressions based on the available information.</p>
         <ul style="margin:14px 0 0 18px; line-height:1.85;">
           <li style="margin-bottom:10px;"><strong>Authenticity &amp; Quality</strong> — How genuine, emotionally
             expressive, and artistically crafted is this music? A high rating (4–5) means the music feels soulful,
@@ -999,152 +1090,163 @@
             monopolistic control, prioritising profit over artists, or treating music as a commodity.</li>
         </ul>
       </div>
-      <div class="section-label" style="margin-top:8px;">Your Priorities</div>
-      <div class="instructions-box" style="margin-bottom:20px;">
-        Before listening to the excerpts, please tell us how much each of the following dimensions affects your personal
-        perception of music quality. Use a 1–5 scale: <strong>1 = this dimension has no effect on how you perceive
-          music</strong>; <strong>5 = this dimension has a very strong effect</strong>. Extreme examples are provided
-        below each question to anchor the scale.
-      </div>
-
-      <div class="q-card" id="card-imp-aq">
-        <div class="q-label">How much does the <em>authenticity and artistic quality</em> of music affect your
-          perception of it?<span class="req">*</span></div>
-        <div class="likert-row">
-          <label><input type="radio" name="imp_aq" value="1">
-            <div class="likert-btn">1</div>
-          </label>
-          <label><input type="radio" name="imp_aq" value="2">
-            <div class="likert-btn">2</div>
-          </label>
-          <label><input type="radio" name="imp_aq" value="3">
-            <div class="likert-btn">3</div>
-          </label>
-          <label><input type="radio" name="imp_aq" value="4">
-            <div class="likert-btn">4</div>
-          </label>
-          <label><input type="radio" name="imp_aq" value="5">
-            <div class="likert-btn">5</div>
-          </label>
-        </div>
-        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
-        <div
-          style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
-          <strong>Rating of 1:</strong> You enjoy a piece assembled mechanically without any creative decisions just as
-          much as a deeply original, carefully crafted work — the level of artistic effort and expressiveness makes no
-          difference to your enjoyment.<br><br>
-          <strong>Rating of 5:</strong> Discovering that a piece was formulaic, derivative, and produced without any
-          genuine artistic intent would completely destroy your enjoyment of it, regardless of how it sounds on first
-          listen.
-        </div>
-        <div class="err" id="err-imp-aq">Please select a value.</div>
-      </div>
-
-      <div class="q-card" id="card-imp-ec">
-        <div class="q-label">How much do <em>ethics and copyright considerations</em> affect your perception of a piece
-          of music?<span class="req">*</span></div>
-        <div class="likert-row">
-          <label><input type="radio" name="imp_ec" value="1">
-            <div class="likert-btn">1</div>
-          </label>
-          <label><input type="radio" name="imp_ec" value="2">
-            <div class="likert-btn">2</div>
-          </label>
-          <label><input type="radio" name="imp_ec" value="3">
-            <div class="likert-btn">3</div>
-          </label>
-          <label><input type="radio" name="imp_ec" value="4">
-            <div class="likert-btn">4</div>
-          </label>
-          <label><input type="radio" name="imp_ec" value="5">
-            <div class="likert-btn">5</div>
-          </label>
-        </div>
-        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
-        <div
-          style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
-          <strong>Rating of 1:</strong> You would enjoy a song just as much knowing that its composer deliberately
-          plagiarised a melody from another artist, claimed sole authorship, and paid no compensation whatsoever — the
-          composer's ethics and any copyright violations have no bearing on your enjoyment.<br><br>
-          <strong>Rating of 5:</strong> Learning that a piece was built from stolen material, created in clear violation
-          of copyright, and without any consent or compensation to the original artists would make it impossible for you
-          to enjoy the music, no matter how it sounds.
-        </div>
-        <div class="err" id="err-imp-ec">Please select a value.</div>
-      </div>
-
-      <div class="q-card" id="card-imp-ej">
-        <div class="q-label">How much does the <em>economic impact on musicians and the creative economy</em> affect
-          your perception of a piece of music?<span class="req">*</span></div>
-        <div class="likert-row">
-          <label><input type="radio" name="imp_ej" value="1">
-            <div class="likert-btn">1</div>
-          </label>
-          <label><input type="radio" name="imp_ej" value="2">
-            <div class="likert-btn">2</div>
-          </label>
-          <label><input type="radio" name="imp_ej" value="3">
-            <div class="likert-btn">3</div>
-          </label>
-          <label><input type="radio" name="imp_ej" value="4">
-            <div class="likert-btn">4</div>
-          </label>
-          <label><input type="radio" name="imp_ej" value="5">
-            <div class="likert-btn">5</div>
-          </label>
-        </div>
-        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
-        <div
-          style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
-          <strong>Rating of 1:</strong> Knowing that widespread adoption of this type of music has caused thousands of
-          professional musicians to permanently lose their livelihoods would not diminish your enjoyment of it in any
-          way — the economic consequences for others are entirely irrelevant to your personal listening
-          experience.<br><br>
-          <strong>Rating of 5:</strong> You would be unable to enjoy a piece knowing that listening to or supporting
-          music like this directly contributes to displacing working musicians from the creative economy and destroying
-          their careers.
-        </div>
-        <div class="err" id="err-imp-ej">Please select a value.</div>
-      </div>
-
-      <div class="q-card" id="card-imp-cp">
-        <div class="q-label">How much do the <em>corporate and platform practices</em> behind music affect your
-          perception of it?<span class="req">*</span></div>
-        <div class="likert-row">
-          <label><input type="radio" name="imp_cp" value="1">
-            <div class="likert-btn">1</div>
-          </label>
-          <label><input type="radio" name="imp_cp" value="2">
-            <div class="likert-btn">2</div>
-          </label>
-          <label><input type="radio" name="imp_cp" value="3">
-            <div class="likert-btn">3</div>
-          </label>
-          <label><input type="radio" name="imp_cp" value="4">
-            <div class="likert-btn">4</div>
-          </label>
-          <label><input type="radio" name="imp_cp" value="5">
-            <div class="likert-btn">5</div>
-          </label>
-        </div>
-        <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
-        <div
-          style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
-          <strong>Rating of 1:</strong> You would enjoy a piece equally even knowing it was produced by a company that
-          locks artists into exploitative contracts, pays minimal royalties, and treats music purely as a commercial
-          commodity — corporate practices are entirely irrelevant to your perception of the music itself.<br><br>
-          <strong>Rating of 5:</strong> Knowing that the company behind a piece of music engages in monopolistic,
-          exploitative practices toward artists and actively undermines the creative ecosystem would entirely change how
-          you feel about it, making genuine enjoyment impossible.
-        </div>
-        <div class="err" id="err-imp-cp">Please select a value.</div>
-      </div>
-
       <div class="section-label" style="margin-top:8px;">Music Excerpts</div>
+      <div id="song-page-label" style="text-align:center; color:#6b5f57; margin-bottom:12px;"></div>
       <div id="songs-container"></div>
+      <div id="imp-section" style="display:none;">
+        <div class="section-label" style="margin-top:8px;">Your Priorities</div>
+        <div class="instructions-box" style="margin-bottom:20px;">
+          Now that you have listened to all the excerpts, please tell us how much each of the following dimensions
+          affects
+          your personal perception of music quality. Use a 1–5 scale: <strong>1 = this dimension has no effect on how
+            you
+            perceive music</strong>; <strong>5 = this dimension has a very strong effect</strong>. Extreme examples are
+          provided below each question to anchor the scale.
+        </div>
+
+        <div class="q-card" id="card-imp-aq">
+          <div class="q-label">How much does the <em>authenticity and artistic quality</em> of music affect your
+            perception of it?<span class="req">*</span></div>
+          <div class="likert-row">
+            <label><input type="radio" name="imp_aq" value="1">
+              <div class="likert-btn">1</div>
+            </label>
+            <label><input type="radio" name="imp_aq" value="2">
+              <div class="likert-btn">2</div>
+            </label>
+            <label><input type="radio" name="imp_aq" value="3">
+              <div class="likert-btn">3</div>
+            </label>
+            <label><input type="radio" name="imp_aq" value="4">
+              <div class="likert-btn">4</div>
+            </label>
+            <label><input type="radio" name="imp_aq" value="5">
+              <div class="likert-btn">5</div>
+            </label>
+          </div>
+          <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+          <div
+            style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+            <strong>Rating of 1:</strong> You enjoy a piece assembled mechanically without any creative decisions just
+            as
+            much as a deeply original, carefully crafted work — the level of artistic effort and expressiveness makes no
+            difference to your enjoyment.<br><br>
+            <strong>Rating of 5:</strong> Discovering that a piece was formulaic, derivative, and produced without any
+            genuine artistic intent would completely destroy your enjoyment of it, regardless of how it sounds on first
+            listen.
+          </div>
+          <div class="err" id="err-imp-aq">Please select a value.</div>
+        </div>
+
+        <div class="q-card" id="card-imp-ec">
+          <div class="q-label">How much do <em>ethics and copyright considerations</em> affect your perception of a
+            piece
+            of music?<span class="req">*</span></div>
+          <div class="likert-row">
+            <label><input type="radio" name="imp_ec" value="1">
+              <div class="likert-btn">1</div>
+            </label>
+            <label><input type="radio" name="imp_ec" value="2">
+              <div class="likert-btn">2</div>
+            </label>
+            <label><input type="radio" name="imp_ec" value="3">
+              <div class="likert-btn">3</div>
+            </label>
+            <label><input type="radio" name="imp_ec" value="4">
+              <div class="likert-btn">4</div>
+            </label>
+            <label><input type="radio" name="imp_ec" value="5">
+              <div class="likert-btn">5</div>
+            </label>
+          </div>
+          <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+          <div
+            style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+            <strong>Rating of 1:</strong> You would enjoy a song just as much knowing that its composer deliberately
+            plagiarised a melody from another artist, claimed sole authorship, and paid no compensation whatsoever — the
+            composer's ethics and any copyright violations have no bearing on your enjoyment.<br><br>
+            <strong>Rating of 5:</strong> Learning that a piece was built from stolen material, created in clear
+            violation
+            of copyright, and without any consent or compensation to the original artists would make it impossible for
+            you
+            to enjoy the music, no matter how it sounds.
+          </div>
+          <div class="err" id="err-imp-ec">Please select a value.</div>
+        </div>
+
+        <div class="q-card" id="card-imp-ej">
+          <div class="q-label">How much does the <em>economic impact on musicians and the creative economy</em> affect
+            your perception of a piece of music?<span class="req">*</span></div>
+          <div class="likert-row">
+            <label><input type="radio" name="imp_ej" value="1">
+              <div class="likert-btn">1</div>
+            </label>
+            <label><input type="radio" name="imp_ej" value="2">
+              <div class="likert-btn">2</div>
+            </label>
+            <label><input type="radio" name="imp_ej" value="3">
+              <div class="likert-btn">3</div>
+            </label>
+            <label><input type="radio" name="imp_ej" value="4">
+              <div class="likert-btn">4</div>
+            </label>
+            <label><input type="radio" name="imp_ej" value="5">
+              <div class="likert-btn">5</div>
+            </label>
+          </div>
+          <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+          <div
+            style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+            <strong>Rating of 1:</strong> Knowing that widespread adoption of this type of music has caused thousands of
+            professional musicians to permanently lose their livelihoods would not diminish your enjoyment of it in any
+            way — the economic consequences for others are entirely irrelevant to your personal listening
+            experience.<br><br>
+            <strong>Rating of 5:</strong> You would be unable to enjoy a piece knowing that listening to or supporting
+            music like this directly contributes to displacing working musicians from the creative economy and
+            destroying
+            their careers.
+          </div>
+          <div class="err" id="err-imp-ej">Please select a value.</div>
+        </div>
+
+        <div class="q-card" id="card-imp-cp">
+          <div class="q-label">How much do the <em>corporate and platform practices</em> behind music affect your
+            perception of it?<span class="req">*</span></div>
+          <div class="likert-row">
+            <label><input type="radio" name="imp_cp" value="1">
+              <div class="likert-btn">1</div>
+            </label>
+            <label><input type="radio" name="imp_cp" value="2">
+              <div class="likert-btn">2</div>
+            </label>
+            <label><input type="radio" name="imp_cp" value="3">
+              <div class="likert-btn">3</div>
+            </label>
+            <label><input type="radio" name="imp_cp" value="4">
+              <div class="likert-btn">4</div>
+            </label>
+            <label><input type="radio" name="imp_cp" value="5">
+              <div class="likert-btn">5</div>
+            </label>
+          </div>
+          <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+          <div
+            style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+            <strong>Rating of 1:</strong> You would enjoy a piece equally even knowing it was produced by a company that
+            locks artists into exploitative contracts, pays minimal royalties, and treats music purely as a commercial
+            commodity — corporate practices are entirely irrelevant to your perception of the music itself.<br><br>
+            <strong>Rating of 5:</strong> Knowing that the company behind a piece of music engages in monopolistic,
+            exploitative practices toward artists and actively undermines the creative ecosystem would entirely change
+            how
+            you feel about it, making genuine enjoyment impossible.
+          </div>
+          <div class="err" id="err-imp-cp">Please select a value.</div>
+        </div>
+      </div><!-- /imp-section -->
       <div class="btn-row">
-        <button type="button" class="btn btn-secondary" onclick="goToPhase('1b')">← Back</button>
-        <button type="button" class="btn btn-primary" onclick="goToReflection()">Continue to Final Questions →</button>
+        <button type="button" class="btn btn-secondary" onclick="songPageBack()">← Back</button>
+        <button type="button" class="btn btn-primary" id="btn-song-next" onclick="advanceSongPage()">Next Page
+          →</button>
       </div>
     </div><!-- /phase-2 -->
 
@@ -1265,6 +1367,79 @@
         of the study design to examine how such labels affect perceived quality.<br><br>
         We hope this offers an interesting perspective on the way we all experience music.
       </div>
+
+      <details style="margin-top:22px; border:1px solid var(--rule); border-radius:var(--radius); overflow:hidden;">
+        <summary
+          style="cursor:pointer; padding:12px 16px; background:var(--surface); font-weight:500; font-size:0.9rem; color:var(--ink-soft); list-style:none; display:flex; align-items:center; gap:8px;">
+          <span>▸</span> View the full list of songs used in this study
+        </summary>
+        <div style="padding:16px 20px; font-size:0.83rem; line-height:1.85; color:var(--ink-soft);">
+          <p style="margin-bottom:10px;">All 60 excerpts were drawn from the following human-made recordings, presented
+            in alphabetical order by artist:</p>
+          <ol style="columns:2; column-gap:32px; padding-left:1.4em; margin:0;">
+            <li>Angels and Agony – <em>"Forever"</em></li>
+            <li>Angerfist &amp; Predator – <em>"Legend"</em></li>
+            <li>Anthony Braxton – <em>"Impressions"</em></li>
+            <li>Autechre – <em>"Nil"</em></li>
+            <li>Avenged Sevenfold – <em>"Nightmare"</em></li>
+            <li>Backstreet Boys – <em>"Everybody"</em></li>
+            <li>Bearson – <em>"Want You"</em></li>
+            <li>Bell Biv Devoe – <em>"Poison"</em></li>
+            <li>Black Heat – <em>"The Jungle"</em></li>
+            <li>Cast – <em>"Alright"</em></li>
+            <li>Cassius – <em>"1999"</em></li>
+            <li>Cecil Taylor – <em>"Lena"</em></li>
+            <li>Charley Patton – <em>"Shake It and Break It"</em></li>
+            <li>Chromatics – <em>"Lady"</em></li>
+            <li>Code Industry – <em>"Fury"</em></li>
+            <li>Destructo – <em>"Party Up"</em></li>
+            <li>Devendra Banhart – <em>"Baby"</em></li>
+            <li>DJ Amok – <em>"Nightmare"</em></li>
+            <li>Eric Dolphy &amp; John Lewis – <em>"The Stranger"</em></li>
+            <li>Grandmaster Flash – <em>"The Message"</em></li>
+            <li>Hanatarash – <em>"1969"</em></li>
+            <li>Hard Corps – <em>"Dirty"</em></li>
+            <li>Housey Doingz – <em>"Lounge"</em></li>
+            <li>J Majik &amp; Wickaman – <em>"Crazy World"</em></li>
+            <li>Jimmy Eat World – <em>"Pain"</em></li>
+            <li>Jimmy MacPartland – <em>"Donna"</em></li>
+            <li>King Oliver – <em>"Shake It and Break It"</em></li>
+            <li>Kit Clayton – <em>"Nele"</em></li>
+            <li>Lasgo – <em>"Something"</em></li>
+            <li>LFO – <em>"Freak"</em></li>
+            <li>Lil Jon &amp; the East Side Boys – <em>"Get Low"</em></li>
+            <li>Lily Allen – <em>"The Fear"</em></li>
+            <li>Mantronix – <em>"Bassline"</em></li>
+            <li>Max Sedgley – <em>"Happy"</em></li>
+            <li>MC Shy D – <em>"Shake It"</em></li>
+            <li>Mind.In.A.Box – <em>"Change"</em></li>
+            <li>Mosca – <em>"Bax"</em></li>
+            <li>Numb – <em>"Hole"</em></li>
+            <li>Omar &amp; Zed Bias – <em>"Dancing"</em></li>
+            <li>Operation Ivy – <em>"Sound System"</em></li>
+            <li>Patsy Cline – <em>"Crazy"</em></li>
+            <li>Paul Whiteman – <em>"Changes"</em></li>
+            <li>Rammstein – <em>"Ich Will"</em></li>
+            <li>RJD2 – <em>"1976"</em></li>
+            <li>Robert Miles – <em>"Children"</em></li>
+            <li>Seabound – <em>"Castaway"</em></li>
+            <li>Shiva Chandra – <em>"Pieces"</em></li>
+            <li>Shizuo – <em>"Sweat"</em></li>
+            <li>Skunk Anansie – <em>"Weak"</em></li>
+            <li>Stereophonics – <em>"Dakota"</em></li>
+            <li>Steve Roach – <em>"Traveler"</em></li>
+            <li>Swedish House Mafia – <em>"One"</em></li>
+            <li>The Bamboos – <em>"Happy"</em></li>
+            <li>The Shadows of Knight – <em>"Gloria"</em></li>
+            <li>The Sins of Thy Beloved – <em>"Forever"</em></li>
+            <li>Tina Cousins – <em>"Pray"</em></li>
+            <li>Travis – <em>"Sing"</em></li>
+            <li>Valerie Dore – <em>"The Night"</em></li>
+            <li>Wes Montgomery – <em>"Round Midnight"</em></li>
+            <li>Years &amp; Years – <em>"King"</em></li>
+          </ol>
+        </div>
+      </details>
 
       <p style="font-size:0.83rem;margin-top:16px;">You may now close this window.</p>
     </div>
@@ -3232,6 +3407,9 @@
 
     const SONGS_PER_RESPONDENT = 60;
     const ATTN_CHECK_EVERY = 3;
+    const SONGS_PER_PAGE = 10;
+    const TOTAL_SONG_PAGES = Math.ceil(SONGS_PER_RESPONDENT / SONGS_PER_PAGE);
+    let currentSongPage = 1;
 
     // 60 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
     // interleaved in groups of three so each consecutive triplet has one of each context type.
@@ -3318,6 +3496,116 @@
       }
       return a;
     }
+
+    // ── SAVE-AND-RESUME ───────────────────────────────────────────────
+    function generateResumeCode() {
+      const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = '';
+      for (let i = 0; i < 8; i++) {
+        if (i === 4) code += '-';
+        code += chars[Math.floor(Math.random() * chars.length)];
+      }
+      return code;
+    }
+    let resumeCode = generateResumeCode();
+
+    function captureFormSnapshot() {
+      const snap = {};
+      document.querySelectorAll('input[name]').forEach(el => {
+        if (el.type === 'checkbox') {
+          if (!Array.isArray(snap[el.name])) snap[el.name] = [];
+          if (el.checked) snap[el.name].push(el.value);
+        } else if (el.type === 'radio') {
+          if (el.checked) snap[el.name] = el.value;
+        } else {
+          snap[el.name] = el.value;
+        }
+      });
+      document.querySelectorAll('textarea[name], select[name]').forEach(el => {
+        snap[el.name] = el.value;
+      });
+      return snap;
+    }
+
+    function applyFormSnapshot(snap) {
+      Object.entries(snap).forEach(([name, value]) => {
+        document.querySelectorAll('input[name="' + name + '"]').forEach(el => {
+          if (el.type === 'checkbox') {
+            el.checked = Array.isArray(value) && value.includes(el.value);
+          } else if (el.type === 'radio') {
+            el.checked = el.value === value;
+          } else {
+            el.value = value;
+          }
+        });
+        document.querySelectorAll('textarea[name="' + name + '"], select[name="' + name + '"]').forEach(el => {
+          el.value = value;
+        });
+      });
+    }
+
+    function showResumeBanner() {
+      const banner = document.getElementById('resume-banner');
+      if (banner) banner.style.display = 'flex';
+      const display = document.getElementById('resume-code-display');
+      if (display) display.textContent = resumeCode;
+    }
+
+    function saveDraft(phase) {
+      const draft = {
+        resumeCode,
+        phase: String(phase),
+        currentSongPage,
+        selectedPairIds: selectedPairs.map(p => p.id),
+        responseData: Object.assign({}, responseData),
+        formSnapshot: captureFormSnapshot(),
+        savedAt: new Date().toISOString()
+      };
+      try { localStorage.setItem('survey_draft_' + resumeCode, JSON.stringify(draft)); } catch (e) { }
+      showResumeBanner();
+    }
+
+    function clearDraft() {
+      try { localStorage.removeItem('survey_draft_' + resumeCode); } catch (e) { }
+    }
+
+    function copyResumeCode() {
+      navigator.clipboard?.writeText(resumeCode).catch(() => { });
+      const confirm = document.getElementById('resume-copy-confirm');
+      if (confirm) {
+        confirm.style.display = '';
+        setTimeout(() => { confirm.style.display = 'none'; }, 2000);
+      }
+    }
+
+    function resumeFromCode() {
+      const input = document.getElementById('resume-code-input');
+      let raw = (input?.value || '').trim().toUpperCase().replace(/[^A-Z0-9]/g, '');
+      if (raw.length === 8) raw = raw.slice(0, 4) + '-' + raw.slice(4);
+      const saved = localStorage.getItem('survey_draft_' + raw);
+      const errEl = document.getElementById('resume-error');
+      if (!saved) { if (errEl) errEl.style.display = ''; return; }
+      if (errEl) errEl.style.display = 'none';
+      let draft;
+      try { draft = JSON.parse(saved); } catch (e) { if (errEl) errEl.style.display = ''; return; }
+
+      resumeCode = draft.resumeCode || raw;
+      responseData = Object.assign({}, draft.responseData || {});
+      currentSongPage = draft.currentSongPage || 1;
+      const ids = draft.selectedPairIds || [];
+      selectedPairs = ids.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)).filter(Boolean);
+
+      const phase = draft.phase || '1';
+      if (phase === '1b' || phase === '2' || phase === '3') {
+        if (!document.getElementById('music-quiz-container').children.length) buildMusicQuiz();
+      }
+      if (phase === '2') buildSongCards(currentSongPage);
+
+      goToPhase(phase);
+      setTimeout(() => applyFormSnapshot(draft.formSnapshot || {}), 80);
+      showResumeBanner();
+    }
+    // ─────────────────────────────────────────────────────────────────
 
     function goToPhase(n) {
       document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
@@ -3665,6 +3953,7 @@
       if (!document.getElementById('music-quiz-container').children.length) {
         buildMusicQuiz();
       }
+      saveDraft('1b');
       goToPhase('1b');
     }
 
@@ -3688,16 +3977,52 @@
       });
 
       selectedPairs = shuffle(PREDETERMINED_PAIRS.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)));
-      buildSongCards();
+      currentSongPage = 1;
+      buildSongCards(1);
+      saveDraft(2);
       goToPhase(2);
     }
 
-    // Build song cards
-    function buildSongCards() {
+    // Build song cards for the given page (1-based)
+    function buildSongCards(page) {
       const container = document.getElementById('songs-container');
       container.innerHTML = '';
       attnSlotMap = {};
-      selectedPairs.forEach((pair, i) => {
+
+      // Show priorities section only on the last page (after all excerpts)
+      const impSection = document.getElementById('imp-section');
+      if (impSection) impSection.style.display = page === TOTAL_SONG_PAGES ? '' : 'none';
+
+      // Update page label and next-button text
+      const pageLabel = document.getElementById('song-page-label');
+      if (pageLabel) pageLabel.textContent = 'Page ' + page + ' of ' + TOTAL_SONG_PAGES;
+      const btnNext = document.getElementById('btn-song-next');
+      if (btnNext) btnNext.textContent = page < TOTAL_SONG_PAGES ? 'Next Page →' : 'Continue to Final Questions →';
+
+      // Update progress bar
+      const progFill = document.getElementById('prog-fill-2');
+      const progLabel = document.getElementById('prog-label-2');
+      if (progFill) progFill.style.width = Math.round(40 + 40 * (page - 1) / TOTAL_SONG_PAGES) + '%';
+      if (progLabel) progLabel.textContent = 'Page ' + page + ' of ' + TOTAL_SONG_PAGES;
+
+      if (page === 4) {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8d5a8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#2d6a2d; font-size:1rem; line-height:1.5;';
+        banner.innerHTML = '<strong>You\'re halfway there!</strong> You\'ve completed 30 of 60 excerpts — keep up the great work!';
+        container.appendChild(banner);
+      }
+      if (page === TOTAL_SONG_PAGES) {
+        const banner = document.createElement('div');
+        banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8bfe8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#1a3a6a; font-size:1rem; line-height:1.5;';
+        banner.innerHTML = '<strong>This is the last page of excerpts!</strong> Just 10 more to go — you\'re almost done!';
+        container.appendChild(banner);
+      }
+
+      const start = (page - 1) * SONGS_PER_PAGE;
+      const end = Math.min(start + SONGS_PER_PAGE, selectedPairs.length);
+      for (let j = 0; j < end - start; j++) {
+        const i = start + j;
+        const pair = selectedPairs[i];
         const slotNum = i + 1;
         const slotPfx = 'song_' + slotKey(slotNum);
         if (ATTN_CHECK_EVERY > 0 && i > 0 && i % ATTN_CHECK_EVERY === 0) {
@@ -3810,20 +4135,26 @@
           '<div class="err" id="err-' + slotPfx + '_heard">Please answer this question for this excerpt.</div></div>' +
           '</div>';
         container.appendChild(card);
-      });
+      }
     }
 
-    // PHASE 2 → PHASE 3
-    function goToReflection() {
+    // PHASE 2 navigation — advance one song page or transition to phase 3
+    function advanceSongPage() {
       let ok = true;
       let firstBad = null;
-      [['imp_aq', 'imp-aq'], ['imp_ec', 'imp-ec'], ['imp_ej', 'imp-ej'], ['imp_cp', 'imp-cp']].forEach(([name, cardId]) => {
-        const val = document.querySelector('input[name="' + name + '"]:checked');
-        const bad = !val;
-        showErr('err-' + cardId, bad);
-        markCard('card-' + cardId, bad);
-        if (bad) { ok = false; firstBad = firstBad || document.getElementById('card-' + cardId); }
-      });
+
+      // Validate priorities (imp_*) only on the last page (shown after all excerpts)
+      if (currentSongPage === TOTAL_SONG_PAGES) {
+        [['imp_aq', 'imp-aq'], ['imp_ec', 'imp-ec'], ['imp_ej', 'imp-ej'], ['imp_cp', 'imp-cp']].forEach(([name, cardId]) => {
+          const val = document.querySelector('input[name="' + name + '"]:checked');
+          const bad = !val;
+          showErr('err-' + cardId, bad);
+          markCard('card-' + cardId, bad);
+          if (bad) { ok = false; firstBad = firstBad || document.getElementById('card-' + cardId); }
+        });
+      }
+
+      // Validate current page's attention checks
       Object.entries(attnSlotMap).forEach(([slotNum, { aId, target }]) => {
         const slider = document.getElementById(aId + '_slider');
         if (!slider) return;
@@ -3831,7 +4162,11 @@
         showErr('err-' + aId, bad);
         if (bad) { ok = false; firstBad = firstBad || slider; }
       });
-      selectedPairs.forEach((pair, i) => {
+
+      // Validate current page's song ratings
+      const start = (currentSongPage - 1) * SONGS_PER_PAGE;
+      const end = Math.min(start + SONGS_PER_PAGE, selectedPairs.length);
+      for (let i = start; i < end; i++) {
         const slotNum = i + 1;
         const slotPfx = 'song_' + slotKey(slotNum);
         ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
@@ -3844,11 +4179,19 @@
         const heardBad = !heard;
         showErr('err-' + slotPfx + '_heard', heardBad);
         if (heardBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
-      });
+      }
       if (!ok) { firstBad?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
-      // Collect song data
-      selectedPairs.forEach((pair, i) => {
+      // Collect priorities on the last page
+      if (currentSongPage === TOTAL_SONG_PAGES) {
+        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+          responseData['imp_' + asp] = document.querySelector('input[name="imp_' + asp + '"]:checked')?.value ?? '';
+        });
+      }
+
+      // Collect current page's song data
+      for (let i = start; i < end; i++) {
+        const pair = selectedPairs[i];
         const slotNum = i + 1;
         const slotPfx = 'song_' + slotKey(slotNum);
         responseData[slotPfx + '_id'] = pair.id;
@@ -3859,16 +4202,33 @@
         responseData[slotPfx + '_heard_before'] = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked')?.value ?? '';
         const attnInfo = attnSlotMap[slotNum];
         responseData[slotPfx + '_attn_check'] = attnInfo ? document.getElementById(attnInfo.aId + '_slider')?.value ?? '' : '';
-      });
-      for (let s = selectedPairs.length + 1; s <= SONGS_PER_RESPONDENT; s++) {
-        const slotPfx = 'song_' + slotKey(s);
-        ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
       }
-      responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
-      ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
-        responseData['imp_' + asp] = document.querySelector('input[name="imp_' + asp + '"]:checked')?.value ?? '';
-      });
-      goToPhase(3);
+
+      if (currentSongPage < TOTAL_SONG_PAGES) {
+        currentSongPage++;
+        saveDraft(2);
+        buildSongCards(currentSongPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        // Final page: pad unused slots and move to reflection
+        for (let s = selectedPairs.length + 1; s <= SONGS_PER_RESPONDENT; s++) {
+          const slotPfx = 'song_' + slotKey(s);
+          ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
+        }
+        responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
+        saveDraft(3);
+        goToPhase(3);
+      }
+    }
+
+    function songPageBack() {
+      if (currentSongPage > 1) {
+        currentSongPage--;
+        buildSongCards(currentSongPage);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        goToPhase('1b');
+      }
     }
 
     // ── GITHUB CSV PERSISTENCE ────────────────────────────────────────
@@ -3989,6 +4349,7 @@
 
       // Persist to storage
       await saveResponse(responseData);
+      clearDraft();
 
       // Show debrief
       document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
