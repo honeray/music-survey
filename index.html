@@ -3482,6 +3482,11 @@
     let responseData = {};
     let completionCode = '';
     let surveyStartTime = Date.now();
+    let phase1bStartTime = null;
+    let songsStartTime = null;
+    let currentSongPageStartTime = null;
+    let phase3StartTime = null;
+    const questionFirstAnswerTimes = {};
 
     // Generate 6-digit completion code
     function generateCode() {
@@ -3950,6 +3955,13 @@
       });
       responseData['bg_owned_items'] = cbChecked17.map(e => e.value).join('|');
 
+      phase1bStartTime = Date.now();
+      responseData['time_bg_seconds'] = Math.round((phase1bStartTime - surveyStartTime) / 1000);
+      for (let _qi = 1; _qi <= 17; _qi++) {
+        const _t = questionFirstAnswerTimes['card-q' + _qi];
+        responseData['time_bg_q' + String(_qi).padStart(2, '0')] = _t != null ? Math.round((_t - surveyStartTime) / 1000) : '';
+      }
+
       if (!document.getElementById('music-quiz-container').children.length) {
         buildMusicQuiz();
       }
@@ -3976,6 +3988,13 @@
         responseData[q.id] = selected === q.answer ? '1' : '0';
       });
 
+      songsStartTime = Date.now();
+      responseData['time_mq_seconds'] = Math.round((songsStartTime - (phase1bStartTime || surveyStartTime)) / 1000);
+      MUSIC_QUESTIONS.forEach(q => {
+        const _t = questionFirstAnswerTimes['card-' + q.id];
+        responseData['time_' + q.id] = _t != null ? Math.round((_t - (phase1bStartTime || surveyStartTime)) / 1000) : '';
+      });
+
       selectedPairs = shuffle(PREDETERMINED_PAIRS.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)));
       currentSongPage = 1;
       buildSongCards(1);
@@ -3988,6 +4007,7 @@
       const container = document.getElementById('songs-container');
       container.innerHTML = '';
       attnSlotMap = {};
+      currentSongPageStartTime = Date.now();
 
       // Show priorities section only on the last page (after all excerpts)
       const impSection = document.getElementById('imp-section');
@@ -4204,6 +4224,18 @@
         responseData[slotPfx + '_attn_check'] = attnInfo ? document.getElementById(attnInfo.aId + '_slider')?.value ?? '' : '';
       }
 
+      // Capture timing for this song page and each card on it
+      const _pageEndTime = Date.now();
+      responseData['time_song_page_' + currentSongPage + '_seconds'] = currentSongPageStartTime
+        ? Math.round((_pageEndTime - currentSongPageStartTime) / 1000) : '';
+      for (let _i = start; _i < end; _i++) {
+        const _slotNum = _i + 1;
+        const _cardId = 'song-card-slot-' + slotKey(_slotNum);
+        const _t = questionFirstAnswerTimes[_cardId];
+        responseData['time_song_' + slotKey(_slotNum)] = (_t != null && currentSongPageStartTime)
+          ? Math.round((_t - currentSongPageStartTime) / 1000) : '';
+      }
+
       if (currentSongPage < TOTAL_SONG_PAGES) {
         currentSongPage++;
         saveDraft(2);
@@ -4216,6 +4248,9 @@
           ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
         }
         responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
+        phase3StartTime = Date.now();
+        responseData['time_songs_seconds'] = songsStartTime
+          ? Math.round((phase3StartTime - songsStartTime) / 1000) : '';
         saveDraft(3);
         goToPhase(3);
       }
@@ -4342,6 +4377,11 @@
       responseData['refl_open_text'] = document.getElementById('pq4-text')?.value || '';
       responseData['meta_timestamp'] = new Date().toISOString();
       responseData['meta_time_spent_seconds'] = Math.round((Date.now() - surveyStartTime) / 1000);
+      responseData['time_refl_seconds'] = phase3StartTime ? Math.round((Date.now() - phase3StartTime) / 1000) : '';
+      ['pq1', 'pq2', 'pq3'].forEach(function(id, idx) {
+        const _t = questionFirstAnswerTimes['card-' + id];
+        responseData['time_refl_q' + (idx + 1)] = (_t != null && phase3StartTime) ? Math.round((_t - phase3StartTime) / 1000) : '';
+      });
 
       // Generate completion code
       completionCode = generateCode();
@@ -4373,6 +4413,13 @@
         const txt = document.getElementById('q4-other-txt');
         if (txt) txt.style.display = e.target.checked ? 'block' : 'none';
       }
+    });
+
+    // Record the first time a respondent interacts with each question card
+    document.addEventListener('change', function (e) {
+      const card = e.target.closest('.q-card, .song-card');
+      if (!card || !card.id || questionFirstAnswerTimes[card.id] != null) return;
+      questionFirstAnswerTimes[card.id] = Date.now();
     });
   </script>
 </body>

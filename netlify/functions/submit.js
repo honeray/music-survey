@@ -77,6 +77,39 @@ const COLUMNS = [
   'imp_aq', 'imp_ec', 'imp_ej', 'imp_cp',
   'refl_sound_vs_context', 'refl_ai_affect', 'refl_fair_compensation', 'refl_open_text',
   'meta_timestamp', 'meta_time_spent_seconds', 'completion_code',
+  // Section durations (seconds)
+  'time_bg_seconds', 'time_mq_seconds', 'time_songs_seconds', 'time_refl_seconds',
+  // Per-song-page durations (seconds)
+  'time_song_page_1_seconds', 'time_song_page_2_seconds', 'time_song_page_3_seconds',
+  'time_song_page_4_seconds', 'time_song_page_5_seconds', 'time_song_page_6_seconds',
+  // Background question first-answer offsets from section start (seconds)
+  'time_bg_q01', 'time_bg_q02', 'time_bg_q03', 'time_bg_q04', 'time_bg_q05',
+  'time_bg_q06', 'time_bg_q07', 'time_bg_q08', 'time_bg_q09', 'time_bg_q10',
+  'time_bg_q11', 'time_bg_q12', 'time_bg_q13', 'time_bg_q14', 'time_bg_q15',
+  'time_bg_q16', 'time_bg_q17',
+  // Music quiz first-answer offsets from section start (seconds)
+  'time_mq_rhythm_1', 'time_mq_rhythm_2', 'time_mq_rhythm_3', 'time_mq_rhythm_4', 'time_mq_rhythm_5',
+  'time_mq_pitch_1', 'time_mq_pitch_2', 'time_mq_pitch_3', 'time_mq_pitch_4', 'time_mq_pitch_5',
+  'time_mq_keys_1', 'time_mq_keys_2', 'time_mq_keys_3', 'time_mq_keys_4', 'time_mq_keys_5',
+  'time_mq_intervals_1', 'time_mq_intervals_2', 'time_mq_intervals_3', 'time_mq_intervals_4', 'time_mq_intervals_5',
+  'time_mq_chords_1', 'time_mq_chords_2', 'time_mq_chords_3', 'time_mq_chords_4', 'time_mq_chords_5',
+  'time_mq_terms_1', 'time_mq_terms_2', 'time_mq_terms_3', 'time_mq_terms_4', 'time_mq_terms_5',
+  'time_mq_context_1', 'time_mq_context_2', 'time_mq_context_3', 'time_mq_context_4', 'time_mq_context_5',
+  // Song first-answer offsets from song-page start (seconds)
+  'time_song_01', 'time_song_02', 'time_song_03', 'time_song_04', 'time_song_05',
+  'time_song_06', 'time_song_07', 'time_song_08', 'time_song_09', 'time_song_10',
+  'time_song_11', 'time_song_12', 'time_song_13', 'time_song_14', 'time_song_15',
+  'time_song_16', 'time_song_17', 'time_song_18', 'time_song_19', 'time_song_20',
+  'time_song_21', 'time_song_22', 'time_song_23', 'time_song_24', 'time_song_25',
+  'time_song_26', 'time_song_27', 'time_song_28', 'time_song_29', 'time_song_30',
+  'time_song_31', 'time_song_32', 'time_song_33', 'time_song_34', 'time_song_35',
+  'time_song_36', 'time_song_37', 'time_song_38', 'time_song_39', 'time_song_40',
+  'time_song_41', 'time_song_42', 'time_song_43', 'time_song_44', 'time_song_45',
+  'time_song_46', 'time_song_47', 'time_song_48', 'time_song_49', 'time_song_50',
+  'time_song_51', 'time_song_52', 'time_song_53', 'time_song_54', 'time_song_55',
+  'time_song_56', 'time_song_57', 'time_song_58', 'time_song_59', 'time_song_60',
+  // Reflection question first-answer offsets from section start (seconds)
+  'time_refl_q1', 'time_refl_q2', 'time_refl_q3',
 ];
 
 exports.handler = async (event) => {
