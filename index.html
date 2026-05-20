@@ -3461,14 +3461,18 @@
       }
     ];
 
-    const SONGS_PER_RESPONDENT = 60;
+    const SONGS_PER_RESPONDENT = 60;   // regular (non-anchor) pairs
+    const ANCHOR_PAIR_COUNT = 8;
+    const TOTAL_PAIRS_PRESENTED = SONGS_PER_RESPONDENT + ANCHOR_PAIR_COUNT;  // 68
     const ATTN_CHECK_EVERY = 3;
     const SONGS_PER_PAGE = 10;
-    const TOTAL_SONG_PAGES = Math.ceil(SONGS_PER_RESPONDENT / SONGS_PER_PAGE);
+    const TOTAL_SONG_PAGES = Math.ceil(TOTAL_PAIRS_PRESENTED / SONGS_PER_PAGE);  // 7
     let currentSongPage = 1;
+    const ANCHOR_IDS = new Set(["qc_aq_low","qc_aq_high","qc_ec_low","qc_ec_high","qc_ej_low","qc_ej_high","qc_co_low","qc_co_high"]);
 
-    // 60 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
-    // interleaved in groups of three so each consecutive triplet has one of each context type.
+    // 68 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
+    // interleaved in groups of three so each consecutive triplet has one of each context type,
+    // plus 8 anchor pairs (qc_*) for quality control.
     const PREDETERMINED_PAIRS = [
       "s001_kit_clayton_nele_real",
       "s021_lil_jon_the_east_side_boys_get_ai",
@@ -3530,10 +3534,19 @@
       "s020_rjd2_1976_real",
       "s040_operation_ivy_sound_system_ai",
       "s060_jimmy_macpartland_donna_none",
+      "qc_aq_low",
+      "qc_aq_high",
+      "qc_ec_low",
+      "qc_ec_high",
+      "qc_ej_low",
+      "qc_ej_high",
+      "qc_co_low",
+      "qc_co_high",
     ];
 
 
     let selectedPairs = [];
+    let pairPrefixes = [];  // parallel to selectedPairs: 'song_XX' for regular, pair.id for anchors
     let attnSlotMap = {};
     let responseData = {};
     let completionCode = '';
@@ -3655,6 +3668,7 @@
       currentSongPage = draft.currentSongPage || 1;
       const ids = draft.selectedPairIds || [];
       selectedPairs = ids.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)).filter(Boolean);
+      pairPrefixes = buildPairPrefixes(selectedPairs);
 
       const phase = draft.phase || '1';
       if (phase === '1b' || phase === '2' || phase === '3') {
@@ -3684,6 +3698,10 @@
       if (el) el.classList.toggle('has-error', error);
     }
     function slotKey(n) { return String(n).padStart(2, '0'); }
+    function buildPairPrefixes(pairs) {
+      let reg = 0;
+      return pairs.map(p => ANCHOR_IDS.has(p.id) ? p.id : 'song_' + slotKey(++reg));
+    }
 
     // ── MUSIC KNOWLEDGE QUIZ DATA ────────────────────────────────────
     const MUSIC_QUESTIONS = [
@@ -4052,6 +4070,7 @@
       });
 
       selectedPairs = shuffle(PREDETERMINED_PAIRS.map(id => ALL_SONG_CONTEXT_PAIRS.find(p => p.id === id)));
+      pairPrefixes = buildPairPrefixes(selectedPairs);
       currentSongPage = 1;
       buildSongCards(1);
       saveDraft(2);
@@ -4084,13 +4103,13 @@
       if (page === 4) {
         const banner = document.createElement('div');
         banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8d5a8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#2d6a2d; font-size:1rem; line-height:1.5;';
-        banner.innerHTML = '<strong>You\'re halfway there!</strong> You\'ve completed 30 of 60 excerpts — keep up the great work!';
+        banner.innerHTML = '<strong>You\'re halfway there!</strong> You\'ve completed 30 of 68 excerpts — keep up the great work!';
         container.appendChild(banner);
       }
       if (page === TOTAL_SONG_PAGES) {
         const banner = document.createElement('div');
         banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8bfe8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#1a3a6a; font-size:1rem; line-height:1.5;';
-        banner.innerHTML = '<strong>This is the last page of excerpts!</strong> Just 10 more to go — you\'re almost done!';
+        banner.innerHTML = '<strong>This is the last page of excerpts!</strong> Just ' + (TOTAL_PAIRS_PRESENTED - (TOTAL_SONG_PAGES - 1) * SONGS_PER_PAGE) + ' more to go — you\'re almost done!';
         container.appendChild(banner);
       }
 
@@ -4099,12 +4118,12 @@
       for (let j = 0; j < end - start; j++) {
         const i = start + j;
         const pair = selectedPairs[i];
-        const slotNum = i + 1;
-        const slotPfx = 'song_' + slotKey(slotNum);
+        const displayPos = i + 1;
+        const slotPfx = pairPrefixes[i];
         if (ATTN_CHECK_EVERY > 0 && i > 0 && i % ATTN_CHECK_EVERY === 0) {
           const target = Math.floor(Math.random() * 90) + 5;
-          const aId = 'attn_slot_' + slotKey(slotNum);
-          attnSlotMap[slotNum] = { aId, target };
+          const aId = 'attn_slot_' + slotKey(displayPos);
+          attnSlotMap[displayPos] = { aId, target };
           const div = document.createElement('div');
           div.className = 'attn-card';
           div.innerHTML = '<div class="q-label">⚠ Attention Check: For this question only, please move the slider to exactly <strong>' + target + '</strong>.</div>' +
@@ -4124,7 +4143,7 @@
         const heardName = slotPfx + '_heard_before';
         const card = document.createElement('div');
         card.className = 'song-card';
-        card.id = 'song-card-slot-' + slotKey(slotNum);
+        card.id = 'song-card-slot-' + slotKey(displayPos);
         const RATING_ASPECTS = [
           { key: 'aq', label: 'Authenticity &amp; Quality: This music feels genuine, emotionally expressive, and artistically crafted.' },
           { key: 'ec', label: 'Ethics &amp; Copyright: This music was produced in an ethically appropriate way, respecting intellectual property and fair attribution.' },
@@ -4200,7 +4219,7 @@
             '<div class="err" id="err-' + nm + '">Please select a value.</div></div>';
         }).join('');
         card.innerHTML =
-          '<div class="song-card-head">Excerpt ' + slotNum + ' of ' + selectedPairs.length + '</div>' +
+          '<div class="song-card-head">Excerpt ' + displayPos + ' of ' + selectedPairs.length + '</div>' +
           '<div class="song-card-body">' +
           ctxHtml +
           '<div><div class="ctx-label muted" style="margin-bottom:5px;">Listen</div><audio controls preload="none" src="' + pair.audioUrl + '"></audio></div>' +
@@ -4243,18 +4262,18 @@
       const start = (currentSongPage - 1) * SONGS_PER_PAGE;
       const end = Math.min(start + SONGS_PER_PAGE, selectedPairs.length);
       for (let i = start; i < end; i++) {
-        const slotNum = i + 1;
-        const slotPfx = 'song_' + slotKey(slotNum);
+        const displayPos = i + 1;
+        const slotPfx = pairPrefixes[i];
         ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
           const val = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked');
           const aspBad = !val;
           showErr('err-' + slotPfx + '_' + asp, aspBad);
-          if (aspBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
+          if (aspBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(displayPos)); }
         });
         const heard = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked');
         const heardBad = !heard;
         showErr('err-' + slotPfx + '_heard', heardBad);
-        if (heardBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(slotNum)); }
+        if (heardBad) { ok = false; firstBad = firstBad || document.getElementById('song-card-slot-' + slotKey(displayPos)); }
       }
       if (!ok) { firstBad?.scrollIntoView({ behavior: 'smooth', block: 'center' }); return; }
 
@@ -4268,15 +4287,19 @@
       // Collect current page's song data
       for (let i = start; i < end; i++) {
         const pair = selectedPairs[i];
-        const slotNum = i + 1;
-        const slotPfx = 'song_' + slotKey(slotNum);
-        responseData[slotPfx + '_id'] = pair.id;
-        responseData[slotPfx + '_context_type'] = pair.contextType;
+        const displayPos = i + 1;
+        const slotPfx = pairPrefixes[i];
+        if (ANCHOR_IDS.has(pair.id)) {
+          responseData[slotPfx + '_slot'] = displayPos;
+        } else {
+          responseData[slotPfx + '_id'] = pair.id;
+          responseData[slotPfx + '_context_type'] = pair.contextType;
+        }
         ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
           responseData[slotPfx + '_' + asp] = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked')?.value ?? '';
         });
         responseData[slotPfx + '_heard_before'] = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked')?.value ?? '';
-        const attnInfo = attnSlotMap[slotNum];
+        const attnInfo = attnSlotMap[displayPos];
         responseData[slotPfx + '_attn_check'] = attnInfo ? document.getElementById(attnInfo.aId + '_slider')?.value ?? '' : '';
       }
 
@@ -4298,8 +4321,9 @@
         buildSongCards(currentSongPage);
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
-        // Final page: pad unused slots and move to reflection
-        for (let s = selectedPairs.length + 1; s <= SONGS_PER_RESPONDENT; s++) {
+        // Final page: pad any unfilled regular song slots (safety net)
+        const _regularCount = pairPrefixes.filter(p => p.startsWith('song_')).length;
+        for (let s = _regularCount + 1; s <= SONGS_PER_RESPONDENT; s++) {
           const slotPfx = 'song_' + slotKey(s);
           ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
         }

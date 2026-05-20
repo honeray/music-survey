@@ -73,6 +73,14 @@ const COLUMNS = [
   'song_58_id', 'song_58_context_type', 'song_58_aq', 'song_58_ec', 'song_58_ej', 'song_58_cp', 'song_58_heard_before', 'song_58_attn_check',
   'song_59_id', 'song_59_context_type', 'song_59_aq', 'song_59_ec', 'song_59_ej', 'song_59_cp', 'song_59_heard_before', 'song_59_attn_check',
   'song_60_id', 'song_60_context_type', 'song_60_aq', 'song_60_ec', 'song_60_ej', 'song_60_cp', 'song_60_heard_before', 'song_60_attn_check',
+  'qc_aq_low_aq', 'qc_aq_low_ec', 'qc_aq_low_ej', 'qc_aq_low_cp', 'qc_aq_low_heard_before', 'qc_aq_low_attn_check', 'qc_aq_low_slot',
+  'qc_aq_high_aq', 'qc_aq_high_ec', 'qc_aq_high_ej', 'qc_aq_high_cp', 'qc_aq_high_heard_before', 'qc_aq_high_attn_check', 'qc_aq_high_slot',
+  'qc_ec_low_aq', 'qc_ec_low_ec', 'qc_ec_low_ej', 'qc_ec_low_cp', 'qc_ec_low_heard_before', 'qc_ec_low_attn_check', 'qc_ec_low_slot',
+  'qc_ec_high_aq', 'qc_ec_high_ec', 'qc_ec_high_ej', 'qc_ec_high_cp', 'qc_ec_high_heard_before', 'qc_ec_high_attn_check', 'qc_ec_high_slot',
+  'qc_ej_low_aq', 'qc_ej_low_ec', 'qc_ej_low_ej', 'qc_ej_low_cp', 'qc_ej_low_heard_before', 'qc_ej_low_attn_check', 'qc_ej_low_slot',
+  'qc_ej_high_aq', 'qc_ej_high_ec', 'qc_ej_high_ej', 'qc_ej_high_cp', 'qc_ej_high_heard_before', 'qc_ej_high_attn_check', 'qc_ej_high_slot',
+  'qc_co_low_aq', 'qc_co_low_ec', 'qc_co_low_ej', 'qc_co_low_cp', 'qc_co_low_heard_before', 'qc_co_low_attn_check', 'qc_co_low_slot',
+  'qc_co_high_aq', 'qc_co_high_ec', 'qc_co_high_ej', 'qc_co_high_cp', 'qc_co_high_heard_before', 'qc_co_high_attn_check', 'qc_co_high_slot',
   'meta_selected_pair_ids',
   'imp_aq', 'imp_ec', 'imp_ej', 'imp_cp',
   'refl_sound_vs_context', 'refl_ai_affect', 'refl_fair_compensation', 'refl_open_text',
@@ -82,6 +90,7 @@ const COLUMNS = [
   // Per-song-page durations (seconds)
   'time_song_page_1_seconds', 'time_song_page_2_seconds', 'time_song_page_3_seconds',
   'time_song_page_4_seconds', 'time_song_page_5_seconds', 'time_song_page_6_seconds',
+  'time_song_page_7_seconds',
   // Background question first-answer offsets from section start (seconds)
   'time_bg_q01', 'time_bg_q02', 'time_bg_q03', 'time_bg_q04', 'time_bg_q05',
   'time_bg_q06', 'time_bg_q07', 'time_bg_q08', 'time_bg_q09', 'time_bg_q10',
@@ -108,6 +117,8 @@ const COLUMNS = [
   'time_song_46', 'time_song_47', 'time_song_48', 'time_song_49', 'time_song_50',
   'time_song_51', 'time_song_52', 'time_song_53', 'time_song_54', 'time_song_55',
   'time_song_56', 'time_song_57', 'time_song_58', 'time_song_59', 'time_song_60',
+  'time_song_61', 'time_song_62', 'time_song_63', 'time_song_64', 'time_song_65',
+  'time_song_66', 'time_song_67', 'time_song_68',
   // Reflection question first-answer offsets from section start (seconds)
   'time_refl_q1', 'time_refl_q2', 'time_refl_q3',
 ];
