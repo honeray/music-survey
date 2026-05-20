@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yt-dlp --version)",
+      "Bash(ffmpeg -version)",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/UKCjZq0wgp8?si=EptnmYE5Z638X-vJ\")",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/Web007rzSOI?si=3CgYl4tmQW9Jpkmw\")",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/t5Lu4BismDE?si=g9gXvr4NLKrsuyf1\")",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/d-KGO9ZBwVk?si=Kd8lylkKCaDhhdq_\")",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/8xg3vE8Ie_E?si=CBpJoPMZdFQSDZSY\")",
+      "Bash(yt-dlp -x --audio-format mp3 --audio-quality 0 --postprocessor-args \"ffmpeg:-ss 0 -t 30\" -o \"%\\(id\\)s.%\\(ext\\)s\" \"https://youtu.be/aXzVF3XeS8M?si=nyCH3TNYUDvcMcSL\")",
+      "Bash(ffmpeg *)"
+    ]
+  }
+}
