@@ -1374,8 +1374,9 @@
           <span>▸</span> View the full list of songs used in this study
         </summary>
         <div style="padding:16px 20px; font-size:0.83rem; line-height:1.85; color:var(--ink-soft);">
-          <p style="margin-bottom:10px;">All 60 excerpts were drawn from the following human-made recordings, presented
-            in alphabetical order by artist:</p>
+          <p style="margin-bottom:10px;">All 68 excerpts were drawn from human-made recordings. The 67 attributed
+            recordings are listed below in alphabetical order by artist; one excerpt consisted of anonymous random piano
+            notes with no credited composer.</p>
           <ol style="columns:2; column-gap:32px; padding-left:1.4em; margin:0;">
             <li>Angels and Agony – <em>"Forever"</em></li>
             <li>Angerfist &amp; Predator – <em>"Legend"</em></li>
@@ -1385,6 +1386,7 @@
             <li>Backstreet Boys – <em>"Everybody"</em></li>
             <li>Bearson – <em>"Want You"</em></li>
             <li>Bell Biv Devoe – <em>"Poison"</em></li>
+            <li>Billie Holiday – <em>"Strange Fruit"</em></li>
             <li>Black Heat – <em>"The Jungle"</em></li>
             <li>Cast – <em>"Alright"</em></li>
             <li>Cassius – <em>"1999"</em></li>
@@ -1414,11 +1416,14 @@
             <li>MC Shy D – <em>"Shake It"</em></li>
             <li>Mind.In.A.Box – <em>"Change"</em></li>
             <li>Mosca – <em>"Bax"</em></li>
+            <li>Nine Inch Nails – <em>"Ghosts I"</em></li>
+            <li>Nocturnne – <em>"The Hell We've Made"</em></li>
             <li>Numb – <em>"Hole"</em></li>
             <li>Omar &amp; Zed Bias – <em>"Dancing"</em></li>
             <li>Operation Ivy – <em>"Sound System"</em></li>
             <li>Patsy Cline – <em>"Crazy"</em></li>
             <li>Paul Whiteman – <em>"Changes"</em></li>
+            <li>R. Kelly – <em>"Leave Your Name"</em></li>
             <li>Rammstein – <em>"Ich Will"</em></li>
             <li>RJD2 – <em>"1976"</em></li>
             <li>Robert Miles – <em>"Children"</em></li>
@@ -1429,6 +1434,8 @@
             <li>Stereophonics – <em>"Dakota"</em></li>
             <li>Steve Roach – <em>"Traveler"</em></li>
             <li>Swedish House Mafia – <em>"One"</em></li>
+            <li>Taylor Swift – <em>"Love Story"</em></li>
+            <li>Taylor Swift – <em>"Love Story (Taylor's Version)"</em></li>
             <li>The Bamboos – <em>"Happy"</em></li>
             <li>The Shadows of Knight – <em>"Gloria"</em></li>
             <li>The Sins of Thy Beloved – <em>"Forever"</em></li>
@@ -1437,6 +1444,7 @@
             <li>Valerie Dore – <em>"The Night"</em></li>
             <li>Wes Montgomery – <em>"Round Midnight"</em></li>
             <li>Years &amp; Years – <em>"King"</em></li>
+            <li>Yoann Garel – <em>"Furyo"</em></li>
           </ol>
         </div>
       </details>
@@ -3464,11 +3472,11 @@
     const SONGS_PER_RESPONDENT = 60;   // regular (non-anchor) pairs
     const ANCHOR_PAIR_COUNT = 8;
     const TOTAL_PAIRS_PRESENTED = SONGS_PER_RESPONDENT + ANCHOR_PAIR_COUNT;  // 68
-    const ATTN_CHECK_EVERY = 3;
+    const ATTN_CHECK_EVERY = 5;
     const SONGS_PER_PAGE = 10;
     const TOTAL_SONG_PAGES = Math.ceil(TOTAL_PAIRS_PRESENTED / SONGS_PER_PAGE);  // 7
     let currentSongPage = 1;
-    const ANCHOR_IDS = new Set(["qc_aq_low","qc_aq_high","qc_ec_low","qc_ec_high","qc_ej_low","qc_ej_high","qc_co_low","qc_co_high"]);
+    const ANCHOR_IDS = new Set(["qc_aq_low", "qc_aq_high", "qc_ec_low", "qc_ec_high", "qc_ej_low", "qc_ej_high", "qc_co_low", "qc_co_high"]);
 
     // 68 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
     // interleaved in groups of three so each consecutive triplet has one of each context type,
@@ -4103,7 +4111,7 @@
       if (page === 4) {
         const banner = document.createElement('div');
         banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8d5a8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#2d6a2d; font-size:1rem; line-height:1.5;';
-        banner.innerHTML = '<strong>You\'re halfway there!</strong> You\'ve completed 30 of 68 excerpts — keep up the great work!';
+        banner.innerHTML = '<strong>You\'re almost halfway there!</strong> You\'ve completed 30 of 68 excerpts — keep up the great work!';
         container.appendChild(banner);
       }
       if (page === TOTAL_SONG_PAGES) {
@@ -4458,7 +4466,7 @@
       responseData['meta_timestamp'] = new Date().toISOString();
       responseData['meta_time_spent_seconds'] = Math.round((Date.now() - surveyStartTime) / 1000);
       responseData['time_refl_seconds'] = phase3StartTime ? Math.round((Date.now() - phase3StartTime) / 1000) : '';
-      ['pq1', 'pq2', 'pq3'].forEach(function(id, idx) {
+      ['pq1', 'pq2', 'pq3'].forEach(function (id, idx) {
         const _t = questionFirstAnswerTimes['card-' + id];
         responseData['time_refl_q' + (idx + 1)] = (_t != null && phase3StartTime) ? Math.round((_t - phase3StartTime) / 1000) : '';
       });
