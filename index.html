@@ -688,7 +688,7 @@
     <button class="copy-btn" onclick="copyResumeCode()">Copy</button>
     <span id="resume-copy-confirm" style="display:none; color:var(--success); font-size:0.8rem;">Copied!</span>
     <span style="flex:1;"></span>
-    <span style="font-size:0.8rem;">Save this code to return to the survey later.</span>
+    <span style="font-size:0.8rem;">Save this code to return to the survey later. <em>Note: only completed pages are saved — progress on the current page will be lost.</em></span>
   </div>
   <div id="survey-wrap">
 
@@ -1258,7 +1258,7 @@
           <div class="progress-fill" style="width:90%"></div>
         </div>
       </div>
-      <div class="section-label">Reflection</div>
+      <div class="section-label">Final 3 Questions</div>
 
       <div class="q-card" id="card-pq1">
         <div class="q-label">Looking back at your ratings, on a scale of 1 to 5, how much did the <em>sound itself</em>
@@ -4100,7 +4100,7 @@
       const pageLabel = document.getElementById('song-page-label');
       if (pageLabel) pageLabel.textContent = 'Page ' + page + ' of ' + TOTAL_SONG_PAGES;
       const btnNext = document.getElementById('btn-song-next');
-      if (btnNext) btnNext.textContent = page < TOTAL_SONG_PAGES ? 'Next Page →' : 'Continue to Final Questions →';
+      if (btnNext) btnNext.textContent = page < TOTAL_SONG_PAGES ? 'Next Page →' : 'Continue to Final 3 Questions →';
 
       // Update progress bar
       const progFill = document.getElementById('prog-fill-2');
