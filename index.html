@@ -1066,7 +1066,7 @@
         You will now hear a series of short musical excerpts. Each may or may not include background information on
         whether the song is composed by a real human or is an AI-generated facsimile approximating some song. Please
         read any context carefully before rating.
-        <p style="margin-top:10px;">For each excerpt, rate your perception across <strong>four dimensions</strong> using
+        <p style="margin-top:10px;">For each excerpt, rate your perception across <strong>five dimensions</strong> using
           a 1–5 scale (1 = Strongly Disagree, 5 = Strongly Agree). There are no right or wrong answers — we are
           interested in your honest impressions based on the available information.</p>
         <ul style="margin:14px 0 0 18px; line-height:1.85;">
@@ -1084,10 +1084,15 @@
             means this music empowers, assists, or supplements human creativity and lowers barriers to music-making. A
             low rating (1–2) reflects concerns that this type of music threatens musicians' livelihoods, devalues their
             work, or risks displacing them from the industry.</li>
-          <li><strong>Corporate &amp; Platform</strong> — How do you feel about the corporate and platform practices
+          <li style="margin-bottom:10px;"><strong>Corporate &amp; Platform</strong> — How do you feel about the corporate and platform practices
             behind the creation or distribution of music like this? A high rating (4–5) reflects a sense of innovation,
             responsibility, and fair treatment of artists. A low rating (1–2) reflects concerns about exploitation,
             monopolistic control, prioritising profit over artists, or treating music as a commodity.</li>
+          <li><strong>Cultural Impact &amp; Future of Music</strong> — How do you feel about the cultural and societal
+            impact of this type of music on music as an art form and its future? A high rating (4–5) reflects a sense
+            that this music enriches culture, fosters diversity, and opens new creative possibilities. A low rating (1–2)
+            reflects concerns about cultural homogenisation, the erosion of musical diversity, or a degradation of
+            music's role in society.</li>
         </ul>
       </div>
       <div class="section-label" style="margin-top:8px;">Music Excerpts</div>
@@ -1242,6 +1247,40 @@
           </div>
           <div class="err" id="err-imp-cp">Please select a value.</div>
         </div>
+
+        <div class="q-card" id="card-imp-ci">
+          <div class="q-label">How much does the <em>cultural impact on music and its future as an art form</em> affect
+            your perception of it?<span class="req">*</span></div>
+          <div class="likert-row">
+            <label><input type="radio" name="imp_ci" value="1">
+              <div class="likert-btn">1</div>
+            </label>
+            <label><input type="radio" name="imp_ci" value="2">
+              <div class="likert-btn">2</div>
+            </label>
+            <label><input type="radio" name="imp_ci" value="3">
+              <div class="likert-btn">3</div>
+            </label>
+            <label><input type="radio" name="imp_ci" value="4">
+              <div class="likert-btn">4</div>
+            </label>
+            <label><input type="radio" name="imp_ci" value="5">
+              <div class="likert-btn">5</div>
+            </label>
+          </div>
+          <div class="likert-ends"><span>1 — No effect</span><span>5 — Very strong effect</span></div>
+          <div
+            style="margin-top:12px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;">
+            <strong>Rating of 1:</strong> Knowing that widespread adoption of this type of music is gradually
+            homogenising musical culture, eliminating diverse artistic voices, and eroding music's cultural significance
+            would have no effect on your personal enjoyment of it — music's broader cultural impact is entirely
+            irrelevant to your listening experience.<br><br>
+            <strong>Rating of 5:</strong> You would be unable to enjoy a piece knowing that music like this actively
+            degrades musical culture, promotes homogenisation over diversity, and diminishes the future of music as a
+            meaningful art form in society.
+          </div>
+          <div class="err" id="err-imp-ci">Please select a value.</div>
+        </div>
       </div><!-- /imp-section -->
       <div class="btn-row">
         <button type="button" class="btn btn-secondary" onclick="songPageBack()">← Back</button>
@@ -1374,7 +1413,7 @@
           <span>▸</span> View the full list of songs used in this study
         </summary>
         <div style="padding:16px 20px; font-size:0.83rem; line-height:1.85; color:var(--ink-soft);">
-          <p style="margin-bottom:10px;">All 68 excerpts were drawn from human-made recordings. The 67 attributed
+          <p style="margin-bottom:10px;">All 70 excerpts were drawn from human-made recordings. The 69 attributed
             recordings are listed below in alphabetical order by artist; one excerpt consisted of anonymous random piano
             notes with no credited composer.</p>
           <ol style="columns:2; column-gap:32px; padding-left:1.4em; margin:0;">
@@ -1405,12 +1444,14 @@
             <li>J Majik &amp; Wickaman – <em>"Crazy World"</em></li>
             <li>Jimmy Eat World – <em>"Pain"</em></li>
             <li>Jimmy MacPartland – <em>"Donna"</em></li>
+            <li>Joseph Carl Breil – <em>"The Birth of a Nation"</em></li>
             <li>King Oliver – <em>"Shake It and Break It"</em></li>
             <li>Kit Clayton – <em>"Nele"</em></li>
             <li>Lasgo – <em>"Something"</em></li>
             <li>LFO – <em>"Freak"</em></li>
             <li>Lil Jon &amp; the East Side Boys – <em>"Get Low"</em></li>
             <li>Lily Allen – <em>"The Fear"</em></li>
+            <li>Louis Armstrong – <em>"What a Wonderful World"</em></li>
             <li>Mantronix – <em>"Bassline"</em></li>
             <li>Max Sedgley – <em>"Happy"</em></li>
             <li>MC Shy D – <em>"Shake It"</em></li>
@@ -3466,21 +3507,35 @@
         audioUrl: "https://music-snippet-files.s3.ap-southeast-2.amazonaws.com/co_high.mp3",
         contextType: "real",
         context: "<p><strong>\"Love Story (Taylor's Version)\"</strong> is Taylor Swift's 2021 re-recording of her 2008 hit — the first release from her project to re-record her entire back catalog for Big Machine Records.</p><h3>The Re-Recording Project</h3><p>After her original masters were sold without her consent, Swift announced publicly that she would re-record every album she made for Big Machine Records, so that listeners who wished to support her financially could do so by streaming and purchasing <strong>versions she actually owns</strong>. She funded the entire re-recording project herself, retaining <strong>full ownership of all new masters</strong>. Every musician, engineer, and session player involved was paid fairly for their contributions.</p><h3>Artist Self-Determination</h3><p>The re-recording project required years of work and significant personal financial investment. It was unprecedented in scale: no major artist had previously attempted to systematically replace an entire back catalog at this level. The project has been widely covered as a direct challenge to the standard industry model in which labels own recordings — and as a demonstration that an artist with sufficient resources and public support can effectively reclaim the economic value of their own work.</p><p>Swift has explicitly encouraged fans and media outlets to use \"Taylor's Version\" recordings in all contexts, and major streaming platforms, radio stations, and TV shows have largely complied.</p>"
+      },
+      // ── Joseph Carl Breil – "The Birth of a Nation" – Cultural Impact anchor: LOW ──────────────────────────────────────────
+      {
+        id: "qc_ci_low",
+        audioUrl: "https://music-snippet-files.s3.ap-southeast-2.amazonaws.com/ci_low.mp3",
+        contextType: "real",
+        context: "<p><strong>\"The Birth of a Nation\"</strong> (1915) is widely regarded as one of the most culturally destructive films in American history. The score was composed by <strong>Joseph Carl Breil</strong> to accompany D.W. Griffith's silent epic — the first feature film ever screened at the White House.</p><h3>Glorification of the Ku Klux Klan</h3><p>The film portrays the Ku Klux Klan as heroic defenders of white civilization and depicts Black Americans — many played by white actors in blackface — as violent aggressors and sexual predators. Its climax celebrates a KKK raid as a triumphant rescue. The film was used as a <strong>direct recruitment tool</strong> for the KKK, which had nearly dissolved before the film's release; within months, membership surged from a few thousand to over four million.</p><h3>Real-World Violence and Racial Terror</h3><p>Screenings of the film across the United States were followed by documented outbreaks of racial violence, including attacks on Black communities and lynchings. The NAACP attempted to have the film banned in cities across the country, and protests were held at screenings in Boston, Philadelphia, and New York. Several cities refused to screen it; others screened it anyway. The film's cultural legacy includes the revival of mass KKK activity throughout the 1920s and its contribution to the normalization of racial terror as a political instrument in the United States.</p>"
+      },
+      // ── Louis Armstrong – "What a Wonderful World" – Cultural Impact anchor: HIGH ──────────────────────────────────────────
+      {
+        id: "qc_ci_high",
+        audioUrl: "https://music-snippet-files.s3.ap-southeast-2.amazonaws.com/ci_high.mp3",
+        contextType: "real",
+        context: "<p><strong>\"What a Wonderful World\"</strong> was recorded by <strong>Louis Armstrong</strong> in 1967, at the height of the Civil Rights Movement and the Vietnam War. Armstrong — one of the most celebrated and culturally significant musicians of the twentieth century — had spent decades breaking racial barriers in American music, becoming the first Black artist to host a nationally broadcast radio show and one of the first to achieve mainstream crossover success with white audiences.</p><h3>A Song of Hope in a Divided Country</h3><p>The song was recorded as a deliberate act of cultural optimism: a Black American artist, in a country torn apart by segregation, war protests, and political assassination, singing about the beauty of the world. Producer Bob Thiele later said Armstrong performed it as a direct response to the violence and despair of the era. ABC Records initially refused to promote it in the United States, believing American audiences would not respond to its message. It was released without promotion and sold poorly on first release.</p><h3>Cross-Cultural and Lasting Impact</h3><p>The song gradually found its audience through international radio play and later through its use in film and television. It became one of the best-selling singles of all time, recorded in dozens of languages and covered by artists across virtually every musical tradition. It is now one of the most widely recognized songs in the world and has been consistently cited as a unifying cultural artifact — a piece of music whose impact transcended the divisions of its original moment and continues to be used at memorials, peace events, and cultural celebrations across national and political boundaries.</p>"
       }
     ];
 
     const SONGS_PER_RESPONDENT = 60;   // regular (non-anchor) pairs
-    const ANCHOR_PAIR_COUNT = 8;
-    const TOTAL_PAIRS_PRESENTED = SONGS_PER_RESPONDENT + ANCHOR_PAIR_COUNT;  // 68
+    const ANCHOR_PAIR_COUNT = 10;
+    const TOTAL_PAIRS_PRESENTED = SONGS_PER_RESPONDENT + ANCHOR_PAIR_COUNT;  // 70
     const ATTN_CHECK_EVERY = 5;
     const SONGS_PER_PAGE = 10;
     const TOTAL_SONG_PAGES = Math.ceil(TOTAL_PAIRS_PRESENTED / SONGS_PER_PAGE);  // 7
     let currentSongPage = 1;
-    const ANCHOR_IDS = new Set(["qc_aq_low", "qc_aq_high", "qc_ec_low", "qc_ec_high", "qc_ej_low", "qc_ej_high", "qc_co_low", "qc_co_high"]);
+    const ANCHOR_IDS = new Set(["qc_aq_low", "qc_aq_high", "qc_ec_low", "qc_ec_high", "qc_ej_low", "qc_ej_high", "qc_co_low", "qc_co_high", "qc_ci_low", "qc_ci_high"]);
 
-    // 68 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
+    // 70 pre-determined pairs: 20 real (s001–s020), 20 ai (s021–s040), 20 none (s041–s060),
     // interleaved in groups of three so each consecutive triplet has one of each context type,
-    // plus 8 anchor pairs (qc_*) for quality control.
+    // plus 10 anchor pairs (qc_*) for quality control.
     const PREDETERMINED_PAIRS = [
       "s001_kit_clayton_nele_real",
       "s021_lil_jon_the_east_side_boys_get_ai",
@@ -3550,6 +3605,8 @@
       "qc_ej_high",
       "qc_co_low",
       "qc_co_high",
+      "qc_ci_low",
+      "qc_ci_high",
     ];
 
 
@@ -4111,7 +4168,7 @@
       if (page === 4) {
         const banner = document.createElement('div');
         banner.style.cssText = 'background:#e8f4e8; border:1px solid #a8d5a8; border-radius:8px; padding:16px 20px; margin-bottom:20px; text-align:center; color:#2d6a2d; font-size:1rem; line-height:1.5;';
-        banner.innerHTML = '<strong>You\'re almost halfway there!</strong> You\'ve completed 30 of 68 excerpts — keep up the great work!';
+        banner.innerHTML = '<strong>You\'re almost halfway there!</strong> You\'ve completed 30 of 70 excerpts — keep up the great work!';
         container.appendChild(banner);
       }
       if (page === TOTAL_SONG_PAGES) {
@@ -4157,6 +4214,7 @@
           { key: 'ec', label: 'Ethics &amp; Copyright: This music was produced in an ethically appropriate way, respecting intellectual property and fair attribution.' },
           { key: 'ej', label: 'Economic &amp; Job Impact: Music like this has a positive economic impact on working musicians and the broader creative economy.' },
           { key: 'cp', label: 'Corporate &amp; Platform: The corporate and platform practices behind music like this are responsible and fair to artists.' },
+          { key: 'ci', label: 'Cultural Impact &amp; Future of Music: Music like this has a positive cultural impact, enriching musical diversity and contributing to the future of music as an art form.' },
         ];
         const ASPECT_ANCHORS = {
           aq: {
@@ -4214,6 +4272,20 @@
               low: 'Based on your assessment of the context and audio, you believe the corporate and platform practices behind music like this are irresponsible, exploitative, or harmful to artists.',
               high: 'Based on your assessment of the context and audio, you believe the entities behind music like this treat artists fairly, act responsibly, and contribute positively to the creative ecosystem.'
             }
+          },
+          ci: {
+            ai: {
+              low: 'Based on your assessment of the context and audio, you believe AI music like this contributes to the homogenisation of musical culture, displacing diverse human artistic voices and degrading music\'s cultural significance.',
+              high: 'Based on your assessment of the context and audio, you believe AI music like this opens new creative possibilities, enriches musical culture, and can coexist with human artistic traditions in a way that expands rather than diminishes musical diversity.'
+            },
+            real: {
+              low: 'Based on your assessment of the context and audio, music like this contributes to a narrowing of musical culture — promoting formulaic styles, discouraging diversity, or undermining music\'s cultural depth and significance.',
+              high: 'Based on your assessment of the context and audio, music like this genuinely enriches musical culture — it brings something new or meaningful to the artistic landscape and contributes positively to the diversity and vitality of music.'
+            },
+            none: {
+              low: 'Based on your assessment of the context and audio, music like this — regardless of its origin — has a negative cultural impact, contributing to homogenisation or the erosion of diverse musical expression.',
+              high: 'Based on your assessment of the context and audio, music like this has a positive cultural impact, adding meaningfully to the richness and diversity of the musical landscape.'
+            }
           }
         };
         const aspectLikertHtml = RATING_ASPECTS.map(a => {
@@ -4248,7 +4320,7 @@
 
       // Validate priorities (imp_*) only on the last page (shown after all excerpts)
       if (currentSongPage === TOTAL_SONG_PAGES) {
-        [['imp_aq', 'imp-aq'], ['imp_ec', 'imp-ec'], ['imp_ej', 'imp-ej'], ['imp_cp', 'imp-cp']].forEach(([name, cardId]) => {
+        [['imp_aq', 'imp-aq'], ['imp_ec', 'imp-ec'], ['imp_ej', 'imp-ej'], ['imp_cp', 'imp-cp'], ['imp_ci', 'imp-ci']].forEach(([name, cardId]) => {
           const val = document.querySelector('input[name="' + name + '"]:checked');
           const bad = !val;
           showErr('err-' + cardId, bad);
@@ -4272,7 +4344,7 @@
       for (let i = start; i < end; i++) {
         const displayPos = i + 1;
         const slotPfx = pairPrefixes[i];
-        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+        ['aq', 'ec', 'ej', 'cp', 'ci'].forEach(asp => {
           const val = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked');
           const aspBad = !val;
           showErr('err-' + slotPfx + '_' + asp, aspBad);
@@ -4287,7 +4359,7 @@
 
       // Collect priorities on the last page
       if (currentSongPage === TOTAL_SONG_PAGES) {
-        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+        ['aq', 'ec', 'ej', 'cp', 'ci'].forEach(asp => {
           responseData['imp_' + asp] = document.querySelector('input[name="imp_' + asp + '"]:checked')?.value ?? '';
         });
       }
@@ -4303,7 +4375,7 @@
           responseData[slotPfx + '_id'] = pair.id;
           responseData[slotPfx + '_context_type'] = pair.contextType;
         }
-        ['aq', 'ec', 'ej', 'cp'].forEach(asp => {
+        ['aq', 'ec', 'ej', 'cp', 'ci'].forEach(asp => {
           responseData[slotPfx + '_' + asp] = document.querySelector('input[name="' + slotPfx + '_' + asp + '"]:checked')?.value ?? '';
         });
         responseData[slotPfx + '_heard_before'] = document.querySelector('input[name="' + slotPfx + '_heard_before"]:checked')?.value ?? '';
@@ -4333,7 +4405,7 @@
         const _regularCount = pairPrefixes.filter(p => p.startsWith('song_')).length;
         for (let s = _regularCount + 1; s <= SONGS_PER_RESPONDENT; s++) {
           const slotPfx = 'song_' + slotKey(s);
-          ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
+          ['_id', '_context_type', '_aq', '_ec', '_ej', '_cp', '_ci', '_heard_before', '_attn_check'].forEach(k => { responseData[slotPfx + k] = ''; });
         }
         responseData['meta_selected_pair_ids'] = selectedPairs.map(p => p.id).join('|');
         phase3StartTime = Date.now();
