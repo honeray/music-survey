@@ -688,7 +688,8 @@
     <button class="copy-btn" onclick="copyResumeCode()">Copy</button>
     <span id="resume-copy-confirm" style="display:none; color:var(--success); font-size:0.8rem;">Copied!</span>
     <span style="flex:1;"></span>
-    <span style="font-size:0.8rem;">Save this code to return to the survey later. <em>Note: only completed pages are saved — progress on the current page will be lost.</em></span>
+    <span style="font-size:0.8rem;">Save this code to return to the survey later. <em>Note: only completed pages are
+        saved — progress on the current page will be lost.</em></span>
   </div>
   <div id="survey-wrap">
 
@@ -716,6 +717,14 @@
         </div>
       </div>
       <div class="section-label">About You &amp; Music</div>
+
+      <div class="q-card" id="card-q0">
+        <div class="q-label">Please enter your Prolific ID:<span class="req">*</span></div>
+        <input type="text" id="prolific-id-input" name="prolific_id" placeholder="Your Prolific ID"
+          autocomplete="off" spellcheck="false"
+          style="width:100%;padding:10px 12px;font-size:1rem;border:1.5px solid var(--rule);border-radius:var(--radius);font-family:inherit;box-sizing:border-box;margin-top:8px;">
+        <div class="err" id="err-q0">Please enter your Prolific ID.</div>
+      </div>
 
       <div class="q-card" id="card-q1">
         <div class="q-label">On a scale of 1 to 5, how would you rate your musical ability?<span class="req">*</span>
@@ -1043,6 +1052,8 @@
         This section tests your music theory knowledge. There are <strong>35 questions</strong> across seven topics,
         each with increasing difficulty. Please answer every question to the best of your ability — there are right and
         wrong answers here.
+
+        <strong style="display:block;margin-top:10px;">Only survey respondents who score 30/35 or higher will have their responses accepted.</strong>
       </div>
       <div id="music-quiz-container"></div>
       <div class="btn-row">
@@ -1084,13 +1095,15 @@
             means this music empowers, assists, or supplements human creativity and lowers barriers to music-making. A
             low rating (1–2) reflects concerns that this type of music threatens musicians' livelihoods, devalues their
             work, or risks displacing them from the industry.</li>
-          <li style="margin-bottom:10px;"><strong>Corporate &amp; Platform</strong> — How do you feel about the corporate and platform practices
+          <li style="margin-bottom:10px;"><strong>Corporate &amp; Platform</strong> — How do you feel about the
+            corporate and platform practices
             behind the creation or distribution of music like this? A high rating (4–5) reflects a sense of innovation,
             responsibility, and fair treatment of artists. A low rating (1–2) reflects concerns about exploitation,
             monopolistic control, prioritising profit over artists, or treating music as a commodity.</li>
           <li><strong>Cultural Impact &amp; Future of Music</strong> — How do you feel about the cultural and societal
             impact of this type of music on music as an art form and its future? A high rating (4–5) reflects a sense
-            that this music enriches culture, fosters diversity, and opens new creative possibilities. A low rating (1–2)
+            that this music enriches culture, fosters diversity, and opens new creative possibilities. A low rating
+            (1–2)
             reflects concerns about cultural homogenisation, the erosion of musical diversity, or a degradation of
             music's role in society.</li>
         </ul>
@@ -1390,11 +1403,12 @@
       <p>Your responses have been recorded. We sincerely appreciate your time and careful listening.</p>
 
       <div class="completion-code-box">
-        <h3>Your Completion Code</h3>
-        <p>Please enter this code on the study website to confirm your participation:</p>
-        <div class="code-display" id="completion-code">——</div>
-        <p style="font-size:0.78rem;color:var(--ink-soft);margin-top:6px;">Keep a note of this code before closing this
-          page.</p>
+        <h3>Confirm Your Participation</h3>
+        <p>Please click the button below to confirm your participation on Prolific:</p>
+        <a href="https://app.prolific.com/submissions/complete?cc=C6D5B1V1"
+          class="btn btn-primary"
+          style="display:inline-block;margin-top:8px;text-decoration:none;"
+          target="_blank">Complete Submission on Prolific →</a>
       </div>
 
       <div class="debrief-highlight">
@@ -3614,18 +3628,12 @@
     let pairPrefixes = [];  // parallel to selectedPairs: 'song_XX' for regular, pair.id for anchors
     let attnSlotMap = {};
     let responseData = {};
-    let completionCode = '';
     let surveyStartTime = Date.now();
     let phase1bStartTime = null;
     let songsStartTime = null;
     let currentSongPageStartTime = null;
     let phase3StartTime = null;
     const questionFirstAnswerTimes = {};
-
-    // Generate 6-digit completion code
-    function generateCode() {
-      return String(Math.floor(100000 + Math.random() * 900000));
-    }
 
     function shuffle(arr) {
       const a = [...arr];
@@ -4028,6 +4036,11 @@
     // PHASE 1 → PHASE 1b
     function goToMusicQuiz() {
       let ok = true;
+      const prolificId = document.getElementById('prolific-id-input')?.value.trim() || '';
+      const bad0 = prolificId === '';
+      showErr('err-q0', bad0);
+      markCard('card-q0', bad0);
+      if (bad0) ok = false;
       const likertNames = [
         ['bg_musical_ability', 'q1'], ['bg_listening_frequency', 'q2'],
         ['bg_artist_influence', 'q3'], ['bg_cultural_influence', 'q5'],
@@ -4093,6 +4106,7 @@
         responseData[radioName] = document.querySelector('input[name="' + radioName + '"]:checked')?.value || '';
       });
       responseData['bg_owned_items'] = cbChecked17.map(e => e.value).join('|');
+      responseData['prolific_id'] = prolificId;
 
       phase1bStartTime = Date.now();
       responseData['time_bg_seconds'] = Math.round((phase1bStartTime - surveyStartTime) / 1000);
@@ -4126,6 +4140,7 @@
         const selected = document.querySelector('input[name="' + q.id + '"]:checked')?.value || '';
         responseData[q.id] = selected === q.answer ? '1' : '0';
       });
+      responseData['mq_total'] = String(MUSIC_QUESTIONS.reduce((sum, q) => sum + parseInt(responseData[q.id]), 0));
 
       songsStartTime = Date.now();
       responseData['time_mq_seconds'] = Math.round((songsStartTime - (phase1bStartTime || surveyStartTime)) / 1000);
@@ -4443,11 +4458,11 @@
     // and also appended to responses.csv in the GitHub repository.
 
     async function saveResponse(data) {
-      const key = 'response:' + data.completion_code;
+      const key = 'response:' + data.prolific_id;
       try {
         localStorage.setItem(key, JSON.stringify(data));
         let index = JSON.parse(localStorage.getItem('response_index') || '[]');
-        if (!index.includes(data.completion_code)) index.push(data.completion_code);
+        if (!index.includes(data.prolific_id)) index.push(data.prolific_id);
         localStorage.setItem('response_index', JSON.stringify(index));
       } catch (e) { console.error('localStorage save failed:', e); }
       try {
@@ -4543,10 +4558,6 @@
         responseData['time_refl_q' + (idx + 1)] = (_t != null && phase3StartTime) ? Math.round((_t - phase3StartTime) / 1000) : '';
       });
 
-      // Generate completion code
-      completionCode = generateCode();
-      responseData['completion_code'] = completionCode;
-
       // Persist to storage
       await saveResponse(responseData);
       clearDraft();
@@ -4554,7 +4565,6 @@
       // Show debrief
       document.querySelectorAll('.phase').forEach(p => p.classList.remove('active'));
       document.getElementById('debrief-box').style.display = 'block';
-      document.getElementById('completion-code').textContent = completionCode;
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 

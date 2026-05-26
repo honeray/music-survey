@@ -13,6 +13,7 @@
   'mq_chords_1', 'mq_chords_2', 'mq_chords_3', 'mq_chords_4', 'mq_chords_5',
   'mq_terms_1', 'mq_terms_2', 'mq_terms_3', 'mq_terms_4', 'mq_terms_5',
   'mq_context_1', 'mq_context_2', 'mq_context_3', 'mq_context_4', 'mq_context_5',
+  'mq_total',
   'song_01_id', 'song_01_context_type', 'song_01_aq', 'song_01_ec', 'song_01_ej', 'song_01_cp', 'song_01_ci', 'song_01_heard_before', 'song_01_attn_check',
   'song_02_id', 'song_02_context_type', 'song_02_aq', 'song_02_ec', 'song_02_ej', 'song_02_cp', 'song_02_ci', 'song_02_heard_before', 'song_02_attn_check',
   'song_03_id', 'song_03_context_type', 'song_03_aq', 'song_03_ec', 'song_03_ej', 'song_03_cp', 'song_03_ci', 'song_03_heard_before', 'song_03_attn_check',
@@ -86,7 +87,7 @@
   'meta_selected_pair_ids',
   'imp_aq', 'imp_ec', 'imp_ej', 'imp_cp', 'imp_ci',
   'refl_sound_vs_context', 'refl_ai_affect', 'refl_fair_compensation', 'refl_open_text',
-  'meta_timestamp', 'meta_time_spent_seconds', 'completion_code',
+  'meta_timestamp', 'meta_time_spent_seconds', 'prolific_id',
   // Section durations (seconds)
   'time_bg_seconds', 'time_mq_seconds', 'time_songs_seconds', 'time_refl_seconds',
   // Per-song-page durations (seconds)
@@ -186,7 +187,7 @@ exports.handler = async (event) => {
     }
 
     const encoded = Buffer.from(newContent, 'utf-8').toString('base64');
-    const body = { message: `survey response ${data.completion_code}`, content: encoded };
+    const body = { message: `survey response ${data.prolific_id}`, content: encoded };
     if (sha) body.sha = sha;
 
     const wr = await fetch(apiUrl, { method: 'PUT', headers, body: JSON.stringify(body) });
