@@ -678,6 +678,31 @@
       width: 140px;
       background: #fff;
     }
+
+    .info-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      width: 17px;
+      height: 17px;
+      border-radius: 50%;
+      border: 1.5px solid var(--ink-soft);
+      background: transparent;
+      color: var(--ink-soft);
+      font-size: 0.68rem;
+      font-weight: 700;
+      font-family: 'DM Sans', sans-serif;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .info-btn:hover, .info-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
   </style>
 </head>
 
@@ -3635,6 +3660,14 @@
     let phase3StartTime = null;
     const questionFirstAnswerTimes = {};
 
+    function toggleInfo(id, btn) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const opening = el.style.display === 'none';
+      el.style.display = opening ? 'block' : 'none';
+      btn.classList.toggle('active', opening);
+    }
+
     function shuffle(arr) {
       const a = [...arr];
       for (let i = a.length - 1; i > 0; i--) {
@@ -4303,14 +4336,20 @@
             }
           }
         };
+        const isFirstOnPage = j === 0;
         const aspectLikertHtml = RATING_ASPECTS.map(a => {
           const nm = slotPfx + '_' + a.key;
           const anchors = ASPECT_ANCHORS[a.key][pair.contextType] || ASPECT_ANCHORS[a.key].none;
-          return '<div style="margin-bottom:16px;"><div class="q-label" style="margin-bottom:10px;">' + a.label + '<span class="req">*</span></div>' +
+          const infoId = nm + '-info';
+          return '<div style="margin-bottom:16px;">' +
+            '<div class="q-label" style="margin-bottom:10px;display:flex;align-items:flex-start;gap:6px;">' +
+            '<span>' + a.label + '<span class="req">*</span></span>' +
+            '<button type="button" class="info-btn' + (isFirstOnPage ? ' active' : '') + '" onclick="toggleInfo(\'' + infoId + '\',this)" aria-label="Show rating descriptions" title="Show rating descriptions">i</button>' +
+            '</div>' +
             '<div class="likert-row">' +
             [1, 2, 3, 4, 5].map(v => '<label><input type="radio" name="' + nm + '" value="' + v + '"><div class="likert-btn">' + v + '</div></label>').join('') +
             '</div><div class="likert-ends"><span>1 — Strongly Disagree</span><span>5 — Strongly Agree</span></div>' +
-            '<div style="margin-top:10px; background:#f5f0e8; border-left:3px solid #d4c9b8; border-radius:0 4px 4px 0; padding:11px 14px; font-size:0.82rem; line-height:1.75; color:#5a4f45;"><strong>Rating of 1:</strong> ' + anchors.low + '<br><br><strong>Rating of 5:</strong> ' + anchors.high + '</div>' +
+            '<div id="' + infoId + '" style="display:' + (isFirstOnPage ? 'block' : 'none') + ';margin-top:10px;background:#f5f0e8;border-left:3px solid #d4c9b8;border-radius:0 4px 4px 0;padding:11px 14px;font-size:0.82rem;line-height:1.75;color:#5a4f45;"><strong>Rating of 1:</strong> ' + anchors.low + '<br><br><strong>Rating of 5:</strong> ' + anchors.high + '</div>' +
             '<div class="err" id="err-' + nm + '">Please select a value.</div></div>';
         }).join('');
         card.innerHTML =
